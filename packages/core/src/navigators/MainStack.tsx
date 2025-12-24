@@ -42,6 +42,7 @@ const MainStack: React.FC = () => {
     Chat,
     CredentialDetails,
     OpenIDCredentialDetails,
+    WorkflowDetails,
   ] = useServices([
     TOKENS.CUSTOM_NAV_STACK_1,
     TOKENS.OBJECT_SCREEN_CONFIG,
@@ -58,6 +59,7 @@ const MainStack: React.FC = () => {
     TOKENS.SCREEN_CHAT,
     TOKENS.SCREEN_CREDENTIAL_DETAILS,
     TOKENS.SCREEN_OPENID_CREDENTIAL_DETAILS,
+    TOKENS.SCREEN_WORKFLOW_DETAILS,
   ])
   const declinedProofs = useProofByState([ProofState.Declined, ProofState.Abandoned])
   useDeepLinks()
@@ -176,6 +178,14 @@ const MainStack: React.FC = () => {
             gestureEnabled: false,
             cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
             presentation: 'modal',
+          }}
+        />
+        <Stack.Screen
+          name={Screens.WorkflowDetails}
+          component={WorkflowDetails}
+          options={{
+            headerShown: true,
+            title: t('Screens.WorkflowDetails') || 'Workflow Details',
           }}
         />
       </Stack.Navigator>

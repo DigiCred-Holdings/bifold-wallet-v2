@@ -64,6 +64,7 @@ export enum Screens {
   ConfigureMediator = 'Configure Mediator',
   IncomingCall = 'Incoming Call',
   VideoCall = 'Video Call',
+  WorkflowDetails = 'Workflow Details',
 }
 
 export enum Stacks {
@@ -112,6 +113,7 @@ export type RootStackParams = {
     threadId?: string
     video?: boolean
   }
+  [Screens.WorkflowDetails]: { instanceId: string }
 }
 
 export type TabStackParams = {
@@ -143,6 +145,7 @@ export type ContactStackParams = {
   [Screens.ProofDetails]: { recordId: string; isHistory?: boolean }
   [Screens.ProofRequest]: { proofId: string }
   [Screens.JSONDetails]: { jsonBlob: any }
+  [Screens.WorkflowDetails]: { instanceId: string }
 }
 
 export type ProofRequestsStackParams = {

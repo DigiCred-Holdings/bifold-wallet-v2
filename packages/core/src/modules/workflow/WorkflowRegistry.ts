@@ -90,7 +90,13 @@ export class WorkflowRegistry implements IWorkflowRegistry {
           console.warn(`[WorkflowRegistry] Failed to convert record to message:`, error)
         }
       } else {
-        console.warn(`[WorkflowRegistry] No handler found for record:`, (record as any)?.type || typeof record)
+        console.warn(`[WorkflowRegistry] No handler found for record:`, {
+          type: (record as any)?.type,
+          id: (record as any)?.id,
+          instanceId: (record as any)?.instanceId,
+          state: (record as any)?.state,
+          constructor: (record as any)?.constructor?.name,
+        })
       }
     }
 

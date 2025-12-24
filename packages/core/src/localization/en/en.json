@@ -916,7 +916,8 @@
     "History": "History",
     "HistoryDetails": "History Details",
     "UpdateAvailable": "Update Available",
-    "JSONDetails": "JSON details"
+    "JSONDetails": "JSON details",
+    "WorkflowDetails": "Workflow Details"
   },
   "Loading": {
     "TakingTooLong": "This is taking longer than usual. You can return to home or continue waiting.",
@@ -957,6 +958,7 @@
     "OpenPresentation": "Open presentation",
     "ViewRequest": "View request",
     "ViewOffer": "View offer",
+    "ViewWorkflow": "View workflow",
     "OpenItem": "Open",
     "UserYou": "You",
     "YouConnected": "You connected with",
@@ -1025,5 +1027,25 @@
   },
   "FullScreenErrorModal": {
     "PrimaryCTA": "Go back to home"
+  },
+  "Workflow": {
+    "Workflow": "Workflow",
+    "CredentialWorkflow": "Credential Workflow",
+    "ProofWorkflow": "Proof Workflow",
+    "CurrentStep": "Step",
+    "Completed": "Completed",
+    "Failed": "Failed",
+    "Cancelled": "Cancelled",
+    "Paused": "Paused",
+    "InProgress": "In Progress",
+    "ActionFailed": "Action Failed",
+    "ActionFailedDescription": "Something went wrong while processing this action.",
+    "PauseWorkflow": "Pause Workflow",
+    "PauseConfirmation": "Are you sure you want to pause this workflow?",
+    "ResumeWorkflow": "Resume Workflow",
+    "ResumeConfirmation": "Are you sure you want to resume this workflow?",
+    "CancelWorkflow": "Cancel Workflow",
+    "CancelConfirmation": "Are you sure you want to cancel this workflow? This action cannot be undone.",
+    "WorkflowActions": "Workflow Actions"
   }
 }

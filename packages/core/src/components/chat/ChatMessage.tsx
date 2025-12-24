@@ -14,6 +14,7 @@ export enum CallbackType {
   CredentialOffer = 'CredentialOffer',
   ProofRequest = 'ProofRequest',
   PresentationSent = 'PresentationSent',
+  Workflow = 'Workflow',
 }
 
 export interface ChatMessageProps {
@@ -71,6 +72,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
     // After a presentation of a proof
     if (callbackType === CallbackType.PresentationSent) {
       return t('Chat.OpenPresentation')
+    }
+
+    // Workflow actions
+    if (callbackType === CallbackType.Workflow) {
+      return t('Chat.ViewWorkflow')
     }
 
     return t('Chat.OpenItem')

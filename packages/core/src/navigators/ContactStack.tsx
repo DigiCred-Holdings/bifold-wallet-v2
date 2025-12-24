@@ -25,6 +25,7 @@ const ContactStack: React.FC = () => {
     WhatAreContacts,
     CredentialDetails,
     ProofDetails,
+    WorkflowDetails,
   ] = useServices([
     TOKENS.OBJECT_SCREEN_CONFIG,
     // Injectable screens
@@ -36,6 +37,7 @@ const ContactStack: React.FC = () => {
     TOKENS.SCREEN_WHAT_ARE_CONTACTS,
     TOKENS.SCREEN_CREDENTIAL_DETAILS,
     TOKENS.SCREEN_PROOF_DETAILS,
+    TOKENS.SCREEN_WORKFLOW_DETAILS,
   ])
 
   return (
@@ -97,6 +99,14 @@ const ContactStack: React.FC = () => {
           headerRight: () => <HeaderRightHome />,
           ...ScreenOptionsDictionary[Screens.ProofDetails],
         })}
+      />
+      <Stack.Screen
+        name={Screens.WorkflowDetails}
+        component={WorkflowDetails}
+        options={{
+          title: t('Screens.WorkflowDetails') || 'Workflow Details',
+          ...ScreenOptionsDictionary[Screens.WorkflowDetails],
+        }}
       />
     </Stack.Navigator>
   )

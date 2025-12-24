@@ -14,7 +14,7 @@ import { TFunction } from 'react-i18next'
 
 import { CallbackType, ExtendedChatMessage } from '../../../components/chat/ChatMessage'
 import { Role } from '../../../types/chat'
-import { RootStackParams, ContactStackParams } from '../../../types/navigators'
+import { RootStackParams, ContactStackParams, Screens } from '../../../types/navigators'
 import {
   MessageContext,
   NavigationResult,
@@ -30,12 +30,20 @@ function isWorkflowInstanceRecord(record: unknown): record is WorkflowInstanceRe
   if (!record || typeof record !== 'object') return false
   const r = record as any
   // WorkflowInstanceRecord has these key properties
-  return (
-    typeof r.id === 'string' &&
-    typeof r.templateId === 'string' &&
-    typeof r.instanceId === 'string' &&
-    typeof r.state === 'string'
-  )
+  const hasId = typeof r.id === 'string'
+  const hasTemplateId = typeof r.templateId === 'string'
+  const hasInstanceId = typeof r.instanceId === 'string'
+  const hasState = typeof r.state === 'string'
+  const result = hasId && hasTemplateId && hasInstanceId && hasState
+
+  if (!result && r.type === 'WorkflowInstanceRecord') {
+    console.log('[isWorkflowInstanceRecord] WorkflowInstanceRecord failed check:', {
+      hasId, hasTemplateId, hasInstanceId, hasState,
+      id: r.id, templateId: r.templateId, instanceId: r.instanceId, state: r.state,
+    })
+  }
+
+  return result
 }
 
 export class DIDCommWorkflowHandler extends BaseWorkflowHandler<WorkflowInstanceRecord> {
@@ -75,7 +83,7 @@ export class DIDCommWorkflowHandler extends BaseWorkflowHandler<WorkflowInstance
     // If workflow has pending actions, show a callback
     const state = (record as any).state?.toLowerCase() || ''
     if (!['done', 'completed', 'cancelled', 'failed', 'error'].includes(state)) {
-      return CallbackType.CredentialOffer // Reuse for now, shows "View" button
+      return CallbackType.Workflow
     }
     return undefined
   }
@@ -113,12 +121,13 @@ export class DIDCommWorkflowHandler extends BaseWorkflowHandler<WorkflowInstance
   }
 
   getDetailNavigation(
-    _record: WorkflowInstanceRecord,
+    record: WorkflowInstanceRecord,
     _navigation: StackNavigationProp<any>
   ): NavigationResult | undefined {
-    // TODO: Navigate to workflow details screen when it exists
-    // For now, workflow instances are displayed in chat but don't navigate
-    return undefined
+    return {
+      screen: Screens.WorkflowDetails,
+      params: { instanceId: record.instanceId },
+    }
   }
 
   shouldDisplay(record: WorkflowInstanceRecord): boolean {
@@ -139,15 +148,15 @@ export class DIDCommWorkflowHandler extends BaseWorkflowHandler<WorkflowInstance
 
   /**
    * Create the onDetails callback for navigation
-   * TODO: Implement when WorkflowDetails screen exists
    */
   private createOnDetails(
-    _record: WorkflowInstanceRecord,
-    _navigation?: StackNavigationProp<RootStackParams | ContactStackParams>
+    record: WorkflowInstanceRecord,
+    navigation?: StackNavigationProp<RootStackParams | ContactStackParams>
   ): (() => void) | undefined {
-    // For now, workflows display their status in the bubble
-    // Navigation to details can be added when WorkflowDetails screen is implemented
-    return undefined
+    if (!navigation) return undefined
+    return () => {
+      navigation.navigate(Screens.WorkflowDetails as any, { instanceId: record.instanceId })
+    }
   }
 }
 

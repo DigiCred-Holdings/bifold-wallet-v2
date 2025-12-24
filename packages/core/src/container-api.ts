@@ -102,6 +102,7 @@ export const SCREEN_TOKENS = {
   SCREEN_CONTACT_DETAILS: 'screen.contact-details',
   SCREEN_RENAME_CONTACT: 'screen.rename-contact',
   SCREEN_WHAT_ARE_CONTACTS: 'screen.what-are-contacts',
+  SCREEN_WORKFLOW_DETAILS: 'screen.workflow-details',
 
   // Credential Screens
   SCREEN_LIST_CREDENTIALS: 'screen.list-credentials',
@@ -335,6 +336,7 @@ export type TokenMapping = {
   [TOKENS.SCREEN_CONTACT_DETAILS]: React.FC<any>
   [TOKENS.SCREEN_RENAME_CONTACT]: React.FC<any>
   [TOKENS.SCREEN_WHAT_ARE_CONTACTS]: React.FC
+  [TOKENS.SCREEN_WORKFLOW_DETAILS]: React.FC<any>
   [TOKENS.SCREEN_LIST_CREDENTIALS]: React.FC
   [TOKENS.SCREEN_JSON_DETAILS]: React.FC<any>
   [TOKENS.SCREEN_OPENID_CREDENTIAL_DETAILS]: React.FC<any>
