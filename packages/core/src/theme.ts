@@ -1,9 +1,6 @@
 import { StyleSheet, ViewStyle } from 'react-native'
 import { SvgProps } from 'react-native-svg'
 
-// Import DigiCred theme from modular theme system
-import { digicredTheme } from './modules/theme/themes/teal-dark/digicredTheme'
-
 import Arrow from './assets/icons/large-arrow.svg'
 import IconDelete from './assets/icons/trash.svg'
 import IconEdit from './assets/icons/pencil.svg'
@@ -1406,12 +1403,10 @@ export const bifoldTheme: ITheme = {
   Assets,
 }
 
-export { digicredTheme }
+// Default theme is bifold (digicredTheme should be imported separately to avoid circular deps)
+export const defaultTheme = bifoldTheme
 
-// Default theme is now DigiCred
-export const defaultTheme = digicredTheme
-
-export const themes: ITheme[] = [digicredTheme, bifoldTheme]
+export const themes: ITheme[] = [bifoldTheme]
 
 // Backwards compatible exports
 export type {
