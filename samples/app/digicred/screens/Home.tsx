@@ -4,9 +4,8 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
+  ScrollView,
   TouchableOpacity,
-  RefreshControl,
   StatusBar,
   Image,
 } from 'react-native'
@@ -70,13 +69,13 @@ const ContactCard: React.FC<ContactCardProps> = ({
 const Home: React.FC = () => {
   const { t } = useTranslation()
   const navigation = useNavigation<StackNavigationProp<Record<string, object | undefined>>>()
-  const [refreshing, setRefreshing] = React.useState(false)
   const [store] = useStore()
   const [config] = useServices([TOKENS.CONFIG])
   const contactHideList = config?.contactHideList
 
   // Get connections from Credo
-  const { records: connections = [] } = useConnections() ?? { records: [] }
+  const connectionsResult = useConnections()
+  const { records: connections = [] } = connectionsResult ?? { records: [] }
 
   // Filter out mediator connections, hidden contacts, and incomplete connections
   const filteredConnections = useMemo(() => {
@@ -98,11 +97,6 @@ const Home: React.FC = () => {
       return true
     })
   }, [connections, contactHideList, store.preferences.developerModeEnabled])
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true)
-    setTimeout(() => setRefreshing(false), 1000)
-  }, [])
 
   const handleScanPress = useCallback(() => {
     navigation.navigate(Stacks.ConnectStack as string, { screen: Screens.Scan } as Record<string, unknown>)
@@ -155,25 +149,27 @@ const Home: React.FC = () => {
     )
   }
 
-  const renderEmptyState = () => (
-    <View style={styles.emptyState}>
-      <View style={styles.emptyIconContainer}>
-        <Icon name="account-group-outline" size={48} color={DigiCredColors.button.primary} />
+  const renderEmptyState = () => {
+    return (
+      <View style={styles.emptyState}>
+        <View style={styles.emptyIconContainer}>
+          <Icon name="account-group-outline" size={48} color={DigiCredColors.button.primary} />
+        </View>
+        <Text style={styles.emptyTitle}>No Contacts Yet</Text>
+        <Text style={styles.emptySubtitle}>
+          Scan a QR code to connect with organizations and individuals.
+        </Text>
+        <TouchableOpacity
+          style={styles.scanActionButton}
+          onPress={handleScanPress}
+          testID={testIdWithKey('ScanToConnect')}
+        >
+          <Icon name="qrcode-scan" size={20} color="#FFFFFF" />
+          <Text style={styles.scanActionButtonText}>Scan QR Code</Text>
+        </TouchableOpacity>
       </View>
-      <Text style={styles.emptyTitle}>No Contacts Yet</Text>
-      <Text style={styles.emptySubtitle}>
-        Scan a QR code to connect with organizations and individuals.
-      </Text>
-      <TouchableOpacity
-        style={styles.scanActionButton}
-        onPress={handleScanPress}
-        testID={testIdWithKey('ScanToConnect')}
-      >
-        <Icon name="qrcode-scan" size={20} color="#FFFFFF" />
-        <Text style={styles.scanActionButtonText}>Scan QR Code</Text>
-      </TouchableOpacity>
-    </View>
-  )
+    )
+  }
 
   return (
     <GradientBackground>
@@ -192,22 +188,21 @@ const Home: React.FC = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Contacts List */}
-        <FlatList
-          data={sortedConnections}
-          renderItem={renderContact}
-          keyExtractor={(item) => item.id}
+        {/* Contacts List - Using ScrollView instead of FlatList to avoid getItem error */}
+        <ScrollView
           contentContainerStyle={styles.listContent}
-          ListEmptyComponent={renderEmptyState}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={DigiCredColors.text.primary}
-            />
-          }
           showsVerticalScrollIndicator={false}
-        />
+        >
+          {sortedConnections.length === 0 ? (
+            renderEmptyState()
+          ) : (
+            sortedConnections.map((item) => (
+              <View key={item.id}>
+                {renderContact({ item })}
+              </View>
+            ))
+          )}
+        </ScrollView>
       </View>
     </GradientBackground>
   )
