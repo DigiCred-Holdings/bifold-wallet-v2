@@ -21,7 +21,7 @@ export class KanonOCABundleResolver extends DefaultOCABundleResolver {
   private cachedOverlays: Map<string, OCABundle> = new Map()
 
   constructor(bundle?: Record<string, unknown>, options?: OCABundleResolverOptions) {
-    super(bundle, options)
+    super(bundle as any, options)
   }
 
   /**
@@ -158,7 +158,7 @@ export class KanonOCABundleResolver extends DefaultOCABundleResolver {
     return {
       captureBase,
       overlays,
-    } as OCABundle
+    } as unknown as OCABundle
   }
 
   /**
@@ -175,7 +175,7 @@ export class KanonOCABundleResolver extends DefaultOCABundleResolver {
     }
 
     // Fall back to default behavior
-    return super.resolveAllBundles(params)
+    return super.resolveAllBundles(params) as Promise<CredentialOverlay<BrandingOverlay>>
   }
 
   /**
@@ -185,17 +185,18 @@ export class KanonOCABundleResolver extends DefaultOCABundleResolver {
     const lang = params.language || 'en'
 
     // Extract meta overlay
-    const metaOverlay = bundle.overlays?.find(
+    const bundleAny = bundle as any
+    const metaOverlay = bundleAny.overlays?.find(
       (o: any) => o.type === 'spec/overlays/meta/1.0' && o.language === lang
     ) as any
 
     // Extract label overlay
-    const labelOverlay = bundle.overlays?.find(
+    const labelOverlay = bundleAny.overlays?.find(
       (o: any) => o.type === 'spec/overlays/label/1.0' && o.language === lang
     ) as any
 
     // Extract branding overlay
-    const brandingOverlay = bundle.overlays?.find(
+    const brandingOverlay = bundleAny.overlays?.find(
       (o: any) => o.type === 'aries/overlays/branding/0.1'
     ) as BrandingOverlay | undefined
 
