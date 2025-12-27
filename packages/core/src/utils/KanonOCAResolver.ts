@@ -56,7 +56,7 @@ export class KanonOCABundleResolver extends DefaultOCABundleResolver {
           return kanonBundle
         }
       } catch (error) {
-        console.warn(`Failed to fetch Kanon OCA for ${credDefId}:`, error)
+        // Silently fail - credential will use default overlay
       }
     }
 
@@ -83,7 +83,7 @@ export class KanonOCABundleResolver extends DefaultOCABundleResolver {
       // Convert Kanon overlay format to OCA bundle format
       return this.convertKanonOverlayToOCABundle(overlay, credDefId, language)
     } catch (error) {
-      console.warn(`Error fetching credential definition ${credDefId}:`, error)
+      // Silently fail - credential will use default overlay
       return undefined
     }
   }

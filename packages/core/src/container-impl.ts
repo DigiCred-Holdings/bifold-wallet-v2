@@ -1,4 +1,3 @@
-import { DefaultOCABundleResolver } from '@bifold/oca/build/legacy'
 import { KanonOCABundleResolver } from './utils/KanonOCAResolver'
 import { getProofRequestTemplates } from '@bifold/verifier'
 import { Agent } from '@credo-ts/core'
