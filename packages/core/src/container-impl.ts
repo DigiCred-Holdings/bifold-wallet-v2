@@ -30,13 +30,13 @@ import HistoryManager from './modules/history/context/historyManager'
 import { RefreshOrchestrator } from './modules/openid/refresh/refreshOrchestrator'
 import { IRefreshOrchestrator } from './modules/openid/refresh/types'
 import {
-  WorkflowRegistry,
-  createCredentialHandler,
-  createProofHandler,
-  createBasicMessageHandler,
   createActionMenuHandler,
-  createDIDCommWorkflowHandler,
+  createBasicMessageHandler,
   createChatScreenConfig,
+  createCredentialHandler,
+  createDIDCommWorkflowHandler,
+  createProofHandler,
+  WorkflowRegistry,
 } from './modules/workflow'
 import { ThemeRegistry } from './modules/theme'
 import BellIcon from './assets/img/bell-icon.svg'
@@ -127,10 +127,10 @@ import { Config, HistoryEventsLoggerConfig } from './types/config'
 import { InlineErrorPosition } from './types/error'
 import {
   Migration as MigrationState,
+  Onboarding as StoreOnboardingState,
   PersistentState,
   Preferences as PreferencesState,
   State,
-  Onboarding as StoreOnboardingState,
   Tours as ToursState,
 } from './types/state'
 
@@ -145,7 +145,7 @@ export const defaultConfig: Config = {
   enableImplicitInvitations: true,
   enableReuseConnections: true,
   preventScreenCapture: false,
-  supportedLanguages: [Locales.en, Locales.fr, Locales.ptBr],
+  supportedLanguages: [Locales.en, Locales.fr, Locales.ptBr, Locales.sp],
   showPreface: false,
   disableOnboardingSkip: false,
   disableContactsInSettings: false,

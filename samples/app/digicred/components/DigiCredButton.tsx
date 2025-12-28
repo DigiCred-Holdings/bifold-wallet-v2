@@ -1,6 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, ViewStyle, ActivityIndicator } from 'react-native'
-
+import { StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle, ActivityIndicator } from 'react-native'
 import { DigiCredColors } from '../theme'
 
 export type ButtonVariant = 'primary' | 'secondary'
@@ -12,6 +11,9 @@ interface DigiCredButtonProps {
   disabled?: boolean
   loading?: boolean
   style?: ViewStyle
+  customStyle?: ViewStyle
+  textStyle?: TextStyle
+  customTextStyle?: TextStyle
   testID?: string
   accessibilityLabel?: string
   fullWidth?: boolean
@@ -24,40 +26,42 @@ const DigiCredButton: React.FC<DigiCredButtonProps> = ({
   disabled = false,
   loading = false,
   style,
+  customStyle,
+  textStyle,
+  customTextStyle,
   testID,
   accessibilityLabel,
   fullWidth = false,
 }) => {
   const isPrimary = variant === 'primary'
 
+  const buttonStyles = [
+    styles.button,
+    isPrimary ? styles.primaryButton : styles.secondaryButton,
+    disabled && styles.disabledButton,
+    fullWidth && styles.fullWidth,
+    customStyle, // customStyle override
+    style, // style prop thông thường
+  ]
+
+  const textStyles = [
+    styles.buttonText,
+    !isPrimary && styles.secondaryButtonText,
+    disabled && styles.disabledButtonText,
+    customTextStyle,
+    textStyle,
+  ]
+
   return (
     <TouchableOpacity
-      style={[
-        styles.button,
-        isPrimary ? styles.primaryButton : styles.secondaryButton,
-        disabled && styles.disabledButton,
-        fullWidth && styles.fullWidth,
-        style,
-      ]}
+      style={buttonStyles}
       onPress={onPress}
       disabled={disabled || loading}
       testID={testID}
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
     >
-      {loading ? (
-        <ActivityIndicator color={DigiCredColors.text.primary} />
-      ) : (
-        <Text
-          style={[
-            styles.buttonText,
-            !isPrimary && styles.secondaryButtonText,
-            disabled && styles.disabledButtonText,
-          ]}
-        >
-          {title}
-        </Text>
-      )}
+      {loading ? <ActivityIndicator color={DigiCredColors.text.primary} /> : <Text style={textStyles}>{title}</Text>}
     </TouchableOpacity>
   )
 }
