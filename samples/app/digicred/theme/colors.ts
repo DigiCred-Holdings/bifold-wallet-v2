@@ -87,6 +87,13 @@ export const DigiCredColors = {
     itemIconColor: '#F2F0FF',
     itemDescription: 'rgba(242, 240, 255, 0.8)',
   },
+
+  credential: {
+    accept: '#6666CC',
+    decline: '#FF9533',
+    error: '#FF4445',
+
+  },
 }
 
 export default DigiCredColors

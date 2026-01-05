@@ -10,6 +10,7 @@ import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'reac
 
 import { useTheme } from '../../../../contexts/theme'
 import { ActionMenuContentItem, ActionMenuFormField } from '../../types'
+import { DigiCredColors } from '../../../../../../../samples/app/digicred'
 
 interface ActionMenuBubbleProps {
   content: ActionMenuContentItem[]
@@ -28,11 +29,11 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
   // Dynamic styles based on theme
   const themedStyles = StyleSheet.create({
     bubble: {
-      backgroundColor: ColorPalette.brand.secondaryBackground,
+      backgroundColor: DigiCredColors.homeNoChannels.itemBackground,
       borderRadius: 12,
       padding: 16,
       borderWidth: 1,
-      borderColor: ColorPalette.brand.primary,
+      borderColor: DigiCredColors.homeNoChannels.itemBackground,
       width: 320,
       maxWidth: '100%',
     },

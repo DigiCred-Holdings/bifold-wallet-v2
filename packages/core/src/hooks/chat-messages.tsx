@@ -21,7 +21,7 @@ import { TOKENS, useContainer } from '../container-api'
 import { useStore } from '../contexts/store'
 import { useTheme } from '../contexts/theme'
 import { useOptionalWorkflowRegistry } from '../modules/workflow'
-import { MessageContext } from '../modules/workflow/types'
+import { MessageContext } from '../modules/workflow'
 import { Role } from '../types/chat'
 import { RootStackParams, ContactStackParams, Screens, Stacks } from '../types/navigators'
 import {
@@ -36,6 +36,7 @@ import {
 import { useCredentialsByConnectionId } from './credentials'
 import { useProofsByConnectionId } from './proofs'
 import { useWorkflows } from './useWorkflows'
+import { DigiCredColors } from '../../../../samples/app/digicred'
 
 /**
  * Determines the callback type for a credential or proof record
@@ -145,7 +146,7 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
 
     // Add connected message
     const connectedBubbleStyle = {
-      backgroundColor: ColorPalette.brand.secondaryBackground,
+      backgroundColor: DigiCredColors.homeNoChannels.itemBackground,
       borderRadius: 12,
       padding: 12,
       borderWidth: 1,

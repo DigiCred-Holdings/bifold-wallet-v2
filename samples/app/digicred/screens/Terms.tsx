@@ -94,10 +94,10 @@ const Terms: React.FC = () => {
         <View style={styles.container}>
           <CardModal style={styles.card} fullHeight customStyle={styles.cardModalCustomStyle}>
             <Text style={styles.title}>Terms And Conditions</Text>
-            <View style={styles.scrollContainer}>
-              <Animated.ScrollView
+
+            <View style={styles.scrollWrapper}>
+              <ScrollView
                 ref={scrollViewRef}
-                style={{ flex: 1, width: '100%' }}
                 contentContainerStyle={styles.scrollContentContainer}
                 showsVerticalScrollIndicator={false}
                 onScroll={handleScroll}
@@ -109,8 +109,7 @@ const Terms: React.FC = () => {
                 <ThemedText style={styles.lastUpdated}>Last updated: 01.01.2026</ThemedText>
 
                 <ThemedText style={styles.bodyText}>
-                  {`Thank you for using the DigiCred Wallet mobile application! We are committed to protecting your privacy and, for that reason, we have adopted this Privacy Policy to explain the data collection, use, and disclosure practices related to the DigiCred Wallet services (including the DigiCred Wallet mobile application, and any other tools, products, or services provided by Digicred that link to or reference this Privacy Policy) (collectively, the “App”). The App is owned and operated by DigiCred Holdings, Inc., a Delaware corporation (“DigiCred”, “we”, “us” or “our”).\n\nThis Privacy Policy applies to your use of the App. It does not apply to information that you provide to any institutions through which you use the App (your “Institutions”). It also does not apply to information collected through the DigiCred
-website or our use of that information – please click here to view the `}
+                  {`Thank you for using the DigiCred Wallet mobile application! We are committed to protecting your privacy and, for that reason, we have adopted this Privacy Policy to explain the data collection, use, and disclosure practices related to the DigiCred Wallet services (including the DigiCred Wallet mobile application, and any other tools, products, or services provided by Digicred that link to or reference this Privacy Policy) (collectively, the “App”). The App is owned and operated by DigiCred Holdings, Inc., a Delaware corporation (“DigiCred”, “we”, “us” or “our”).\n\nThis Privacy Policy applies to your use of the App. It does not apply to information that you provide to any institutions through which you use the App (your “Institutions”). It also does not apply to information collected through the DigiCred website or our use of that information – please click here to view the `}
                   <ThemedText style={styles.linkText}>DigiCred website privacy policy.</ThemedText>
                   {`\n\nThis Privacy Policy describes, among other things:\n• The process for setting up and accessing the App;\n• Our information collection practices with regard to the App; and\n• How you may be able to exercise choices regarding the information your Institution(s) collect from you in the process of setting up the App or receives from and / or transmits to you through the App.`}
                 </ThemedText>
@@ -179,7 +178,8 @@ website or our use of that information – please click here to view the `}
                 <ThemedText style={styles.bodyText}>
                   {`To ask questions about our Privacy Policy or to lodge a complaint, contact us at:\n\nDigiCred Holdings Inc.\nEmail: info@DigiCred.co`}
                 </ThemedText>
-              </Animated.ScrollView>
+              </ScrollView>
+
               {showScrollbar && (
                 <View style={styles.scrollbarContainer}>
                   <Animated.View
@@ -263,6 +263,7 @@ const styles = StyleSheet.create({
     gap: 24,
     alignSelf: 'stretch',
     marginTop: 20,
+    paddingBottom: 16,
   },
   title: {
     fontFamily: 'Open Sans',
@@ -300,14 +301,14 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 8,
   },
-  scrollContainer: {
-    position: 'relative',
-    height: '70%',
+  scrollWrapper: {
+    flex: 1,
     width: '100%',
-    backgroundColor: 'transparent',
+    position: 'relative',
   },
   scrollContentContainer: {
     paddingRight: 24,
+    paddingBottom: 24,
   },
   bodyText: {
     fontFamily: 'Open Sans',
@@ -337,7 +338,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     gap: 10,
     width: '100%',
-    marginTop: 8,
   },
   checkbox: {
     width: 25,
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
+    //marginTop: 10,
     paddingBottom: 5,
   },
   checkboxChecked: {
@@ -390,14 +390,15 @@ const styles = StyleSheet.create({
     minWidth: 154,
     height: 48,
     opacity: 1,
+    alignSelf: 'flex-start',
   },
   buttonTextCustomStyle: {
     fontFamily: 'Open Sans',
     fontSize: 16,
-    fontWeight: '700' as const,
+    fontWeight: '700',
     lineHeight: 24,
     color: DigiCredColors.text.primary,
-    textTransform: 'none' as const,
+    textTransform: 'none',
     letterSpacing: 0,
   },
   scrollbarContainer: {
@@ -421,4 +422,3 @@ const styles = StyleSheet.create({
 })
 
 export default Terms
-

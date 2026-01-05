@@ -1,13 +1,11 @@
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TouchableOpacity, View } from 'react-native'
+import {  View } from 'react-native'
 import { Bubble, IMessage, Message } from 'react-native-gifted-chat'
 
-import { hitSlop } from '../../constants'
 import { useTheme } from '../../contexts/theme'
 import { Role } from '../../types/chat'
 import { formatTime } from '../../utils/helpers'
-import { testIdWithKey } from '../../utils/testable'
 import { ThemedText } from '../texts/ThemedText'
 
 export enum CallbackType {
@@ -78,34 +76,71 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
     return t('Chat.OpenItem')
   }
 
-  const testIdForCallbackType = (callbackType: CallbackType) => {
-    const text = textForCallbackType(callbackType)
-    const textWithoutSpaces = text.replace(/\s+/g, '')
-
-    return testIdWithKey(textWithoutSpaces)
-  }
-
-  const { ColorPalette } = useTheme()
-
   // For messages with callback types (proof request, credential offer), render in a combined card
+  // if (message.messageOpensCallbackType) {
+  //   const cardStyle = {
+  //     backgroundColor: ColorPalette.brand.secondaryBackground,
+  //     borderRadius: 12,
+  //     borderWidth: 1,
+  //     borderColor: ColorPalette.brand.primary,
+  //     maxWidth: 320,
+  //     overflow: 'hidden' as const,
+  //   }
+  //
+  //   const buttonStyle = {
+  //     backgroundColor: ColorPalette.brand.primary,
+  //     paddingVertical: 12,
+  //     paddingHorizontal: 16,
+  //     alignItems: 'center' as const,
+  //     justifyContent: 'center' as const,
+  //   }
+  //
+  //   return (
+  //     <View style={{ marginBottom: 8 }}>
+  //       <View
+  //         style={{
+  //           flexDirection: 'row',
+  //           justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
+  //         }}
+  //       >
+  //         <View style={cardStyle}>
+  //           {/* Message content */}
+  //           <View style={{ padding: 12 }}>
+  //             {message.renderEvent?.() || null}
+  //           </View>
+  //           {/* Action button */}
+  //           <TouchableOpacity
+  //             accessibilityLabel={textForCallbackType(message.messageOpensCallbackType)}
+  //             accessibilityRole="button"
+  //             testID={testIdForCallbackType(message.messageOpensCallbackType)}
+  //             onPress={() => {
+  //               if (message.onDetails) message.onDetails()
+  //             }}
+  //             style={buttonStyle}
+  //             hitSlop={hitSlop}
+  //           >
+  //             <ThemedText style={{ color: ColorPalette.grayscale.white, fontWeight: '600', fontSize: 16 }}>
+  //               {textForCallbackType(message.messageOpensCallbackType)}
+  //             </ThemedText>
+  //           </TouchableOpacity>
+  //         </View>
+  //       </View>
+  //       {/* Timestamp */}
+  //       <View
+  //         style={{
+  //           flexDirection: 'row',
+  //           justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
+  //           marginTop: 4,
+  //           marginBottom: 20,
+  //         }}
+  //       >
+  //         <MessageTime message={message} />
+  //       </View>
+  //     </View>
+  //   )
+  // }
+
   if (message.messageOpensCallbackType) {
-    const cardStyle = {
-      backgroundColor: ColorPalette.brand.secondaryBackground,
-      borderRadius: 12,
-      borderWidth: 1,
-      borderColor: ColorPalette.brand.primary,
-      maxWidth: 320,
-      overflow: 'hidden' as const,
-    }
-
-    const buttonStyle = {
-      backgroundColor: ColorPalette.brand.primary,
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      alignItems: 'center' as const,
-      justifyContent: 'center' as const,
-    }
-
     return (
       <View style={{ marginBottom: 8 }}>
         <View
@@ -114,27 +149,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
             justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
           }}
         >
-          <View style={cardStyle}>
-            {/* Message content */}
-            <View style={{ padding: 12 }}>
-              {message.renderEvent?.() || null}
-            </View>
-            {/* Action button */}
-            <TouchableOpacity
-              accessibilityLabel={textForCallbackType(message.messageOpensCallbackType)}
-              accessibilityRole="button"
-              testID={testIdForCallbackType(message.messageOpensCallbackType)}
-              onPress={() => {
-                if (message.onDetails) message.onDetails()
-              }}
-              style={buttonStyle}
-              hitSlop={hitSlop}
-            >
-              <ThemedText style={{ color: ColorPalette.grayscale.white, fontWeight: '600', fontSize: 16 }}>
-                {textForCallbackType(message.messageOpensCallbackType)}
-              </ThemedText>
-            </TouchableOpacity>
-          </View>
+          {/* 🆕 Render trực tiếp — không bao bởi nút ViewOffer */}
+          {message.renderEvent?.() || null}
         </View>
         {/* Timestamp */}
         <View
@@ -142,6 +158,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
             flexDirection: 'row',
             justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
             marginTop: 4,
+            marginBottom: 20,
           }}
         >
           <MessageTime message={message} />
