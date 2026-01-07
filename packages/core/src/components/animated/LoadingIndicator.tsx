@@ -1,6 +1,6 @@
 import React from 'react'
 import { View} from 'react-native'
-import DigiCredSplashLogo from '../../../../../samples/app/digicred/assets/SplashLogo.svg'
+import DigiCredSplashLogo from '../../assets/img/SplashLogo.svg'
 import { testIdWithKey } from '../../utils/testable'
 
 // const timing: Animated.TimingAnimationConfig = {

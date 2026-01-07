@@ -1,7 +1,7 @@
 import React from 'react'
 import { useWindowDimensions, View } from 'react-native'
 import Svg, { Circle, Defs, Ellipse, Mask, Path, Rect } from 'react-native-svg'
-import ScanFrame from '../../../../../samples/app/digicred/assets/ScanFrame.svg'
+import ScanFrame from '../../assets/img/ScanFrame.svg'
 
 export enum MaskType {
   QR_CODE = 'qr-code',

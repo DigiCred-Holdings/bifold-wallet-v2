@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
+// import { useTranslation } from 'react-i18next'
 import {  View } from 'react-native'
 import { Bubble, IMessage, Message } from 'react-native-gifted-chat'
 
@@ -48,33 +48,33 @@ const MessageTime: React.FC<{ message: ExtendedChatMessage }> = ({ message }) =>
 // }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
   const { ChatTheme: theme } = useTheme()
   const message = useMemo(() => messageProps.currentMessage as ExtendedChatMessage, [messageProps])
 
-  const textForCallbackType = (callbackType: CallbackType) => {
-    // Receiving a credential offer
-    if (callbackType === CallbackType.CredentialOffer) {
-      return t('Chat.ViewOffer')
-    }
-
-    // Receiving a proof request
-    if (callbackType === CallbackType.ProofRequest) {
-      return t('Chat.ViewRequest')
-    }
-
-    // After a presentation of a proof
-    if (callbackType === CallbackType.PresentationSent) {
-      return t('Chat.OpenPresentation')
-    }
-
-    // Workflow actions
-    if (callbackType === CallbackType.Workflow) {
-      return t('Chat.ViewWorkflow')
-    }
-
-    return t('Chat.OpenItem')
-  }
+  // const textForCallbackType = (callbackType: CallbackType) => {
+  //   // Receiving a credential offer
+  //   if (callbackType === CallbackType.CredentialOffer) {
+  //     return t('Chat.ViewOffer')
+  //   }
+  //
+  //   // Receiving a proof request
+  //   if (callbackType === CallbackType.ProofRequest) {
+  //     return t('Chat.ViewRequest')
+  //   }
+  //
+  //   // After a presentation of a proof
+  //   if (callbackType === CallbackType.PresentationSent) {
+  //     return t('Chat.OpenPresentation')
+  //   }
+  //
+  //   // Workflow actions
+  //   if (callbackType === CallbackType.Workflow) {
+  //     return t('Chat.ViewWorkflow')
+  //   }
+  //
+  //   return t('Chat.OpenItem')
+  // }
 
   // For messages with callback types (proof request, credential offer), render in a combined card
   // if (message.messageOpensCallbackType) {
@@ -149,7 +149,6 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
             justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
           }}
         >
-          {/* 🆕 Render trực tiếp — không bao bởi nút ViewOffer */}
           {message.renderEvent?.() || null}
         </View>
         {/* Timestamp */}
@@ -157,8 +156,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
           style={{
             flexDirection: 'row',
             justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
-            marginTop: 4,
-            marginBottom: 20,
+            marginTop: 10,
+            marginBottom: 10,
           }}
         >
           <MessageTime message={message} />
@@ -201,8 +200,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
             left: {
               backgroundColor: 'transparent',
               marginRight: 0,
-              marginLeft: 0,
               padding: 0,
+              marginLeft: '5%',
             },
             right: {
               backgroundColor: 'transparent',

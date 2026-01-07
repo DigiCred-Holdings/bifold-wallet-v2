@@ -30,7 +30,7 @@ const CardModal: React.FC<CardModalProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: DigiCredColors.card.background,
+    backgroundColor:  DigiCredColors.homeNoChannels.itemBackground,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 24,

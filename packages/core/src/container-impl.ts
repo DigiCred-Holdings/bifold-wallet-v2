@@ -288,7 +288,6 @@ export class MainContainer implements Container {
     this._container.registerInstance(TOKENS.STACK_PROOF_REQUEST, ProofRequestStack)
     this._container.registerInstance(TOKENS.STACK_NOTIFICATION, NotificationStack)
     this._container.registerInstance(TOKENS.STACK_HISTORY, HistoryStack)
-
     this._container.registerInstance(TOKENS.COMP_BUTTON, Button)
     this._container.registerInstance(TOKENS.GROUP_BY_REFERENT, false)
     this._container.registerInstance(TOKENS.HISTORY_ENABLED, false)

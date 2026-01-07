@@ -11,7 +11,6 @@ import { BifoldError } from '../types/error'
 import { WalletSecret } from '../types/security'
 import { useAuth } from '../contexts/auth'
 import { useStore } from '../contexts/store'
-import { GradientBackground } from '../../../../samples/app/digicred'
 
 export type SplashProps = {
   initializeAgent: (walletSecret: WalletSecret) => Promise<void>
@@ -27,7 +26,11 @@ const Splash: React.FC<SplashProps> = ({ initializeAgent }) => {
   const [store] = useStore()
   const { LoadingIndicator } = useAnimatedComponents()
   const initializing = useRef(false)
-  const [logger, ocaBundleResolver] = useServices([TOKENS.UTIL_LOGGER, TOKENS.UTIL_OCA_RESOLVER])
+  const [logger, ocaBundleResolver, GradientBackground] = useServices([
+    TOKENS.UTIL_LOGGER,
+    TOKENS.UTIL_OCA_RESOLVER,
+    TOKENS.COMPONENT_GRADIENT_BACKGROUND,
+  ])
 
   const styles = StyleSheet.create({
     container: {

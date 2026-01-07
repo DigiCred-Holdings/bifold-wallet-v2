@@ -6,7 +6,7 @@ interface SnackbarModalProps {
   message: string
   visible: boolean
   onDismiss: () => void
-  type?: 'error' | 'success' | 'info'
+  type?: 'error' | 'success' | 'info' | 'warning'
 }
 
 const SnackbarModal: React.FC<SnackbarModalProps> = ({ message, visible, onDismiss, type = 'error' }) => {
@@ -14,9 +14,10 @@ const SnackbarModal: React.FC<SnackbarModalProps> = ({ message, visible, onDismi
   const [isVisible, setIsVisible] = useState(visible)
 
   const backgroundColor = {
-    error: '#FF3B30',
+    error: '#FF4445',
     success: '#6666CC',
     info: '#007AFF',
+    warning: '#FF9533',
   }[type]
 
   useEffect(() => {

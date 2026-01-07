@@ -74,11 +74,12 @@ const DigiCredButton: React.FC<DigiCredButtonProps> = ({
       accessibilityRole="button"
     >
       {loading ? (
-        <ActivityIndicator color={finalIconColor} />
+        <View style={{marginHorizontal: 50}}>
+          <ActivityIndicator color={finalIconColor} />
+        </View>
       ) : (
         <View style={styles.content}>
           <Text style={textStyles}>{title}</Text>
-
           {iconName && <Icon name={iconName} size={iconSize} color={finalIconColor} style={styles.icon} />}
         </View>
       )}

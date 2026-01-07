@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { DigiCredButton } from '../index'
 import { DigiCredColors } from '../../theme'
+import { useTranslation } from 'react-i18next'
 
 interface CredentialButtonsProps {
   isProcessing: boolean
@@ -11,10 +12,12 @@ interface CredentialButtonsProps {
 }
 
 const CredentialButtons: React.FC<CredentialButtonsProps> = ({ isProcessing, onAccept, onDecline }) => {
+  const { t } = useTranslation()
+
   return (
     <View style={styles.groupButton}>
       <DigiCredButton
-        title="Decline"
+        title={t('Global.DECLINE')}
         onPress={onDecline}
         variant="secondary"
         disabled={isProcessing}
@@ -31,7 +34,7 @@ const CredentialButtons: React.FC<CredentialButtonsProps> = ({ isProcessing, onA
           style={styles.acceptGradient}
         >
           <DigiCredButton
-            title="Accept"
+            title={t('Global.ACCEPT') + '  \u002B'}
             onPress={onAccept}
             variant="primary"
             disabled={isProcessing}
@@ -44,14 +47,11 @@ const CredentialButtons: React.FC<CredentialButtonsProps> = ({ isProcessing, onA
   )
 }
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window')
-const buttonWidth = Math.min(SCREEN_WIDTH * 0.4, 120)
-
 const styles = StyleSheet.create({
   groupButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    maxWidth: 190,
+    width: '90%',
     alignItems: 'center',
     marginTop: 10,
   },
@@ -60,10 +60,11 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: DigiCredColors.text.homePrimary,
     borderRadius: 25,
-    width: buttonWidth,
+    width: '43%',
     height: 45,
     padding: 0,
     justifyContent: 'center',
+    marginLeft: 5,
   },
   declineButtonText: {
     color: DigiCredColors.text.homePrimary,
@@ -73,8 +74,9 @@ const styles = StyleSheet.create({
   },
 
   acceptGradientWrapper: {
-    width: buttonWidth,
+    width: '46%',
     height: 45,
+    marginRight: 5,
   },
   acceptGradient: {
     borderRadius: 25,

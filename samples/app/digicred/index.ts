@@ -18,6 +18,8 @@ export {
 // DigiCred Components
 export {
   GradientBackground,
+  AboutInstitution,
+  CredentialButtons,
   CardModal,
   DigiCredButton,
   DigiCredToggle,

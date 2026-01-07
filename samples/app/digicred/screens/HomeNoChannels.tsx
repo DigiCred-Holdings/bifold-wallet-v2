@@ -19,11 +19,13 @@ import { DigiCredColors } from '../theme'
 import { useNavigation } from '@react-navigation/native'
 import { useCredentials, useConnections } from '@credo-ts/react-hooks'
 import { CredentialState, ConnectionType, DidExchangeState } from '@credo-ts/core'
-import { Screens, Stacks, TOKENS, useServices, useStore } from '@bifold/core'
+import { useStore } from '@bifold/core'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import HomeNoChannelModal from '../components/HomeNoChannelModal'
 import { isSmallScreen, isTablet } from '../utils/devices'
+import { TOKENS, useServices } from '../../../../packages/core/src/container-api'
+import { Screens, Stacks } from '../../../../packages/core/src/types/navigators'
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 

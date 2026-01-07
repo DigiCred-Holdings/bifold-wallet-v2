@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native'
 import { GradientBackground, DigiCredButton } from '../components'
 import { DigiCredColors } from '../theme'
-
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 interface HomeNoChannelModalProps {

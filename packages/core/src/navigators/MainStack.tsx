@@ -18,7 +18,6 @@ import { useDeepLinks } from '../hooks/deep-links'
 import { useDefaultStackOptions } from './defaultStackOptions'
 import VideoCall from '../screens/VideoCall'
 import IncomingCall from '../screens/IncomingCall'
-import HomeNoChannels from '../../../../samples/app/digicred/screens/HomeNoChannels'
 
 const MainStack: React.FC = () => {
   const { t } = useTranslation()
@@ -44,6 +43,7 @@ const MainStack: React.FC = () => {
     CredentialDetails,
     OpenIDCredentialDetails,
     WorkflowDetails,
+    HomeNoChannels,
   ] = useServices([
     TOKENS.CUSTOM_NAV_STACK_1,
     TOKENS.OBJECT_SCREEN_CONFIG,
@@ -61,6 +61,7 @@ const MainStack: React.FC = () => {
     TOKENS.SCREEN_CREDENTIAL_DETAILS,
     TOKENS.SCREEN_OPENID_CREDENTIAL_DETAILS,
     TOKENS.SCREEN_WORKFLOW_DETAILS,
+    TOKENS.SCREEN_HOME_NO_CHANNELS,
   ])
   const declinedProofs = useProofByState([ProofState.Declined, ProofState.Abandoned])
   useDeepLinks()

@@ -17,11 +17,11 @@ import {
   useAuth,
   useStore,
   DispatchAction,
-  Screens,
   BifoldError,
-  EventTypes,
   testIdWithKey,
 } from '@bifold/core'
+import { Screens } from '../../../../packages/core/src/types/navigators'
+import { EventTypes } from '../../../../packages/core/src/constants'
 
 import { GradientBackground, CardModal, DigiCredButton, DigiCredInput } from '../components'
 import { DigiCredColors } from '../theme'
