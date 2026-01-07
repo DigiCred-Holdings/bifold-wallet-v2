@@ -18,6 +18,7 @@ import {
   TabStacks,
   connectFromScanOrDeepLink,
   testIdWithKey,
+  useIncomingCallHandler,
 } from '@bifold/core'
 
 import { DigiCredTabBar } from '../components'
@@ -27,6 +28,10 @@ const Tab = createBottomTabNavigator<TabStackParams>()
 
 const DigiCredTabStack: React.FC = () => {
   const { t } = useTranslation()
+
+  // Handle incoming WebRTC calls globally
+  useIncomingCallHandler({ enabled: true })
+
   const [
     notificationsConfig,
     config,

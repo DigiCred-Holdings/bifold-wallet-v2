@@ -12,6 +12,8 @@ import {
   useStore,
   DispatchAction,
   testIdWithKey,
+  TOKENS,
+  useServices,
 } from '@bifold/core'
 
 import { GradientBackground, CardModal, DigiCredButton, DigiCredToggle } from '../components'
@@ -20,6 +22,7 @@ import { DigiCredColors } from '../theme'
 const PushNotifications: React.FC = () => {
   const { t } = useTranslation()
   const [, dispatch] = useStore()
+  const [{ enablePushNotifications }] = useServices([TOKENS.CONFIG])
   useNavigation<StackNavigationProp<Record<string, object | undefined>>>() // Navigation available if needed
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(false)
@@ -39,19 +42,46 @@ const PushNotifications: React.FC = () => {
   const onContinue = useCallback(async () => {
     setIsLoading(true)
     try {
-      dispatch({
-        type: DispatchAction.USE_PUSH_NOTIFICATIONS,
-        payload: [notificationsEnabled],
-      })
+      // If user enabled notifications, request OS permission
+      if (notificationsEnabled && enablePushNotifications) {
+        try {
+          const result = await enablePushNotifications.setup()
+          console.log('[PushNotifications] Permission result:', result)
+          // Update with actual permission result
+          dispatch({
+            type: DispatchAction.USE_PUSH_NOTIFICATIONS,
+            payload: [result === 'granted'],
+          })
+        } catch (permError) {
+          console.warn('[PushNotifications] Permission request failed:', permError)
+          // Still allow to continue even if permission request fails
+          dispatch({
+            type: DispatchAction.USE_PUSH_NOTIFICATIONS,
+            payload: [false],
+          })
+        }
+      } else {
+        // User chose not to enable notifications
+        dispatch({
+          type: DispatchAction.USE_PUSH_NOTIFICATIONS,
+          payload: [false],
+        })
+      }
+
+      // Mark that user has considered push notifications (this advances onboarding)
       dispatch({
         type: DispatchAction.DID_CONSIDER_PUSH_NOTIFICATIONS,
       })
     } catch (error) {
-      // Handle error silently
+      console.error('[PushNotifications] Error:', error)
+      // Even on error, mark as considered to not block onboarding
+      dispatch({
+        type: DispatchAction.DID_CONSIDER_PUSH_NOTIFICATIONS,
+      })
     } finally {
       setIsLoading(false)
     }
-  }, [notificationsEnabled, dispatch])
+  }, [notificationsEnabled, dispatch, enablePushNotifications])
 
   return (
     <GradientBackground>

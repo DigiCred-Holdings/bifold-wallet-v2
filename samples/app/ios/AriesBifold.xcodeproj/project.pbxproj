@@ -11,7 +11,6 @@
 		048117462E27616DA47F2FBE /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D055503F207F559673827A7 /* ExpoModulesProvider.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		43857C042720ABB4004F54E0 /* libswiftWebKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43857C032720ABB4004F54E0 /* libswiftWebKit.tbd */; };
 		442476102D61583B00100568 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4424760F2D61583B00100568 /* AppDelegate.mm */; };
 		563D09E68798437ED7A25487 /* libPods-AriesBifold-AriesBifoldTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEAB934F8D18E47FA5D71904 /* libPods-AriesBifold-AriesBifoldTests.a */; };
 		566FB1F2273B158E003E9BEE /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566FB1F1273B158E003E9BEE /* Media.xcassets */; };
@@ -56,7 +55,6 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AriesBifold/main.m; sourceTree = "<group>"; };
 		3E80637D552C876D84B165B7 /* Pods-AriesBifold.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesBifold.debug.xcconfig"; path = "Target Support Files/Pods-AriesBifold/Pods-AriesBifold.debug.xcconfig"; sourceTree = "<group>"; };
 		433E773D26557E1B00F569EE /* Indy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Indy.framework; path = Pods/Frameworks/Indy.framework; sourceTree = "<group>"; };
-		43857C032720ABB4004F54E0 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
 		4424760F2D61583B00100568 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = AriesBifold/AppDelegate.mm; sourceTree = "<group>"; };
 		566FB1F1273B158E003E9BEE /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		56D96E212D31B8C40029DA6A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -83,7 +81,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43857C042720ABB4004F54E0 /* libswiftWebKit.tbd in Frameworks */,
 				FE8E5FF56635B38E3EDDB4FE /* libPods-AriesBifold.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -124,7 +121,6 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				43857C032720ABB4004F54E0 /* libswiftWebKit.tbd */,
 				433E773D26557E1B00F569EE /* Indy.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				C4FD3028FC6F338DC6AC5F0E /* libPods-AriesBifold.a */,
@@ -600,7 +596,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WN3UPHU3CH;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AriesBifold/Info.plist;
@@ -619,7 +615,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.AriesBifold;
+				PRODUCT_BUNDLE_IDENTIFIER = inc.ajna.digicred;
 				PRODUCT_NAME = AriesBifold;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -641,7 +637,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WN3UPHU3CH;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AriesBifold/Info.plist;
@@ -660,7 +656,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.AriesBifold;
+				PRODUCT_BUNDLE_IDENTIFIER = inc.ajna.digicred;
 				PRODUCT_NAME = AriesBifold;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

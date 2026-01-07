@@ -2,11 +2,15 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import "Orientation.h"
+#import <Firebase.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // Initialize Firebase for push notifications
+  [FIRApp configure];
+
   self.moduleName = @"Aries-Bifold";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
