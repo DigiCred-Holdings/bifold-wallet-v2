@@ -2,8 +2,6 @@ import React from 'react'
 import { StyleSheet, ViewStyle } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
-import { DigiCredColors } from '../theme'
-
 interface GradientBackgroundProps {
   children: React.ReactNode
   style?: ViewStyle

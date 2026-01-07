@@ -79,7 +79,7 @@ const Credentials: React.FC = () => {
     const shouldShowTour = enableToursConfig && store.tours.enableTours && !store.tours.seenCredentialsTour
 
     if (shouldShowTour && screenIsFocused) {
-      start()
+      start(BaseTourID.CredentialsTour)
       dispatch({
         type: DispatchAction.UPDATE_SEEN_CREDENTIALS_TOUR,
         payload: [true],

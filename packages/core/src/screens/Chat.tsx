@@ -52,7 +52,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   const headerHeight = useHeaderHeight()
 
 
-  console.log('====BM====> ', JSON.stringify(basicMessages, null, 2))
+  // console.log('====BM====> ', JSON.stringify(basicMessages, null, 2))
 
   // Check if the connection supports WebRTC for video calls
   const { capabilities } = useConnectionCapabilities(connectionId)
@@ -71,14 +71,14 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
         try {
           await context.agent.credentials.acceptOffer(credential.id)
         } catch (err) {
-          console.error('Accept failed:', err)
+          // console.error('Accept failed:', err)
         }
       },
       onCredentialDecline: async (credential, context) => {
         try {
           await context.agent.credentials.declineOffer(credential.id)
         } catch (err) {
-          console.error('Decline failed:', err)
+          // console.error('Decline failed:', err)
         }
       },
       onCredentialPress: (credential, context) => {

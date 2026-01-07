@@ -167,7 +167,7 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
           transformedMessages.push(aboutMessage)
         }
       } catch (error) {
-        console.log('Error parsing workflow message:', error)
+        // console.log('Error parsing workflow message:', error)
       }
     }
 
@@ -176,21 +176,7 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
       : transformedMessages.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
     setMessages(finalMessages)
-  }, [
-    ColorPalette,
-    basicMessages,
-    theme,
-    credentials,
-    t,
-    navigation,
-    proofs,
-    theirLabel,
-    connection,
-    registry,
-    messageContext,
-    workflowInstances,
-    workflowsAvailable,
-  ])
+  }, [ColorPalette, basicMessages, theme, credentials, t, navigation, proofs, theirLabel, connection, registry, messageContext, workflowInstances, workflowsAvailable, AboutInstitution])
 
   return messages
 }
