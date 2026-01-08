@@ -5,7 +5,7 @@ import { DeviceEventEmitter, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { EventTypes } from '../constants'
-import { TOKENS, useServices } from '../container-api'
+import { COMPONENT_TOKENS, TOKENS, useServices } from '../container-api'
 import { useAnimatedComponents } from '../contexts/animated-components'
 import { BifoldError } from '../types/error'
 import { WalletSecret } from '../types/security'
@@ -29,7 +29,7 @@ const Splash: React.FC<SplashProps> = ({ initializeAgent }) => {
   const [logger, ocaBundleResolver, GradientBackground] = useServices([
     TOKENS.UTIL_LOGGER,
     TOKENS.UTIL_OCA_RESOLVER,
-    TOKENS.COMPONENT_GRADIENT_BACKGROUND,
+    COMPONENT_TOKENS.COMPONENT_GRADIENT_BACKGROUND,
   ])
 
   const styles = StyleSheet.create({

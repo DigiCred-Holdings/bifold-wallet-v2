@@ -18,7 +18,7 @@ import { Linking, View } from 'react-native'
 import { ChatEvent } from '../components/chat/ChatEvent'
 import { ExtendedChatMessage, CallbackType } from '../components/chat/ChatMessage'
 import { ThemedText } from '../components/texts/ThemedText'
-import { TOKENS, useContainer } from '../container-api'
+import { COMPONENT_TOKENS, TOKENS, useContainer } from '../container-api'
 import { useStore } from '../contexts/store'
 import { useTheme } from '../contexts/theme'
 import { useOptionalWorkflowRegistry } from '../modules/workflow'
@@ -75,7 +75,7 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
   const credentials = useCredentialsByConnectionId(connection?.id)
   const proofs = useProofsByConnectionId(connection?.id)
   const [theirLabel, setTheirLabel] = useState(getConnectionName(connection, store.preferences.alternateContactNames))
-  const [AboutInstitution] = useServices([TOKENS.COMPONENT_ABOUT_INSTITUTION])
+  const [AboutInstitution] = useServices([COMPONENT_TOKENS.COMPONENT_ABOUT_INSTITUTION])
   const { instances: workflowInstances, isAvailable: workflowsAvailable } = useWorkflows(connection?.id)
 
   const container = useContainer()

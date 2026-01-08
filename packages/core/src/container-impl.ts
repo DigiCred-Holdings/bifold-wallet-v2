@@ -311,6 +311,8 @@ export class MainContainer implements Container {
     this._container.registerInstance(TOKENS.COMPONENT_CRED_LIST_HEADER_RIGHT, () => null)
     this._container.registerInstance(TOKENS.COMPONENT_CRED_LIST_OPTIONS, () => null)
     this._container.registerInstance(TOKENS.COMPONENT_CRED_LIST_FOOTER, () => null)
+    this._container.registerInstance(TOKENS.COMPONENT_ABOUT_INSTITUTION, () => null)
+    this._container.registerInstance(TOKENS.COMPONENT_GRADIENT_BACKGROUND, () => null)
     this._container.registerInstance(TOKENS.COMPONENT_HOME_HEADER, HomeHeaderView)
     this._container.registerInstance(TOKENS.COMPONENT_NOTIFICATION_BANNER, Banner)
     this._container.registerInstance(TOKENS.COMPONENT_HOME_NOTIFICATIONS_EMPTY_LIST, NoNewUpdates)

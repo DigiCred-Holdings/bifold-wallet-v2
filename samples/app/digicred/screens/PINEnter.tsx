@@ -41,7 +41,7 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
   const orTextWidth = 36
   const totalGap = buttonWidth - orTextWidth
   const leftLineWidth = totalGap / 2.3
-  const rightLineWidth = totalGap / 2.3
+  const rightLineWidth = totalGap / 2.2
 
   useEffect(() => {
     const checkBiometrics = async () => {
