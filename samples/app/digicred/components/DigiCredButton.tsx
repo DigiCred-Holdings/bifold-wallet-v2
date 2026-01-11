@@ -12,7 +12,7 @@ interface DigiCredButtonProps {
   disabled?: boolean
   loading?: boolean
   style?: ViewStyle
-  customStyle?: ViewStyle
+  customStyle?: ViewStyle | ViewStyle[]
   textStyle?: TextStyle
   customTextStyle?: TextStyle
   testID?: string
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     height: 56,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 32,
+    paddingHorizontal: 35,
   },
   content: {
     flexDirection: 'row',

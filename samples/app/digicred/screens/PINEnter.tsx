@@ -10,6 +10,8 @@ import {
   Dimensions,
 } from 'react-native'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import { useAuth, useStore, DispatchAction, testIdWithKey } from '@bifold/core'
 import { EventTypes } from '../../../../packages/core/src/constants'
 import { GradientBackground, DigiCredButton, CardModal, DigiCredInput } from '../components'

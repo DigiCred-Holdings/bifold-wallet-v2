@@ -1,76 +1,78 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import CloseSnackMessage from '../assets/CloseSnackMessage.svg'
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import SuccessIcon from '../../assets/circle-check.svg'
+import ErrorIcon from '../../assets/report-problem.svg'
+import InfoIcon from '../../assets/info-icon.svg'
+import WarningIcon from '../../assets/bell-alert.svg'
 
 interface SnackMessageProps {
   message: string
   type: 'error' | 'success' | 'info' | 'warning'
+  showIcon?: boolean
 }
 
-const SnackMessage: React.FC<SnackMessageProps> = ({ message, type }) => {
-  const [isVisible, setIsVisible] = useState(true)
-
+const SnackMessage: React.FC<SnackMessageProps> = ({ message, type, showIcon = true }) => {
   const backgroundColor = {
-    error: '#FF4445',
+    error: '#C62828',
     success: '#6666CC',
-    info: '#007AFF',
-    warning: '#FF9533',
+    info: '#1565C0',
+    warning: '#F57C00',
   }[type]
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false)
-    }, 6000)
+  const textColor = {
+    error: '#FFFFFF',
+    success: '#FFFFFF',
+    info: '#FFFFFF',
+    warning: '#FFFFFF',
+  }[type]
 
-    return () => {
-      clearTimeout(timer)
+  const renderIcon = () => {
+    if (!showIcon) return null
+
+    const iconProps = { width: 20, height: 20 }
+
+    switch (type) {
+      case 'success':
+        return <SuccessIcon {...iconProps} fill="#2E7D32" />
+      case 'error':
+        return <ErrorIcon {...iconProps} fill="#C62828" />
+      case 'info':
+        return <InfoIcon {...iconProps} fill="#1565C0" />
+      case 'warning':
+        return <WarningIcon {...iconProps} fill="#F57C00" />
+      default:
+        return null
     }
-  }, [])
-
-  const handleDismiss = () => {
-    setIsVisible(false)
   }
-
-  if (!isVisible) return null
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
-      <Text style={styles.messageText}>{message}</Text>
-      <TouchableOpacity onPress={handleDismiss} style={styles.closeButton}>
-        <CloseSnackMessage width={16} height={16} />
-      </TouchableOpacity>
+      {showIcon && <View style={styles.iconContainer}>{renderIcon()}</View>}
+      <Text style={[styles.messageText, { color: textColor }]}>{message}</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    flex: 1,
+    width: '100%',
+    alignSelf: 'center',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     marginHorizontal: 16,
-    marginVertical: 8,
+    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+  },
+  iconContainer: {
+    marginRight: 8,
   },
   messageText: {
-    color: '#FFF',
     flex: 1,
     fontSize: 14,
     fontWeight: '500',
-    marginRight: 8,
-  },
-  closeButton: {
-    padding: 4,
   },
 })
 
