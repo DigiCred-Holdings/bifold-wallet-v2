@@ -1,12 +1,6 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  View,
-  Text,
-  StyleSheet,
-} from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { View, Text, StyleSheet } from 'react-native'
 
 import {
   useStore,
@@ -21,19 +15,18 @@ import { DigiCredColors } from '../theme'
 
 const PushNotifications: React.FC = () => {
   const { t } = useTranslation()
-  const [, dispatch] = useStore()
   const [{ enablePushNotifications }] = useServices([TOKENS.CONFIG])
   useNavigation<StackNavigationProp<Record<string, object | undefined>>>() // Navigation available if needed
+  const [store, dispatch] = useStore()
 
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false)
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
 
-  const bulletPoints = [
-    t('PushNotifications.BulletOne') || 'New credential offers',
-    t('PushNotifications.BulletTwo') || 'New proof requests',
-    t('PushNotifications.BulletThree') || 'Updates to your credentials',
-    t('PushNotifications.BulletFour') || 'New messages',
-  ]
+  useEffect(() => {
+    if (store.onboarding?.didConsiderPushNotifications) {
+      setNotificationsEnabled(!!store.preferences?.usePushNotifications)
+    }
+  }, [store.onboarding?.didConsiderPushNotifications, store.preferences?.usePushNotifications])
 
   const handleToggle = useCallback((value: boolean) => {
     setNotificationsEnabled(value)
@@ -86,24 +79,16 @@ const PushNotifications: React.FC = () => {
   return (
     <GradientBackground>
       <View style={styles.container}>
-        <View style={styles.spacer} />
+        <CardModal centered style={styles.cardModal}>
+          <Text style={styles.title}>{t('PushNotifications.Title') || 'Use Push Notifications'}</Text>
 
-        <CardModal>
-          <Text style={styles.title}>
-            {t('PushNotifications.Title') || 'Use Push Notifications'}
-          </Text>
+          <Text style={styles.subtitle}>{t('PushNotifications.Subtitle') || 'Be notified when you receive:'}</Text>
 
-          <Text style={styles.subtitle}>
-            {t('PushNotifications.Subtitle') || 'Be notified when you receive:'}
-          </Text>
-
-          <View style={styles.bulletList}>
-            {bulletPoints.map((item, index) => (
-              <View key={index} style={styles.bulletItem}>
-                <Text style={styles.bullet}>{'\u2022'}</Text>
-                <Text style={styles.bulletText}>{item}</Text>
-              </View>
-            ))}
+          <View style={styles.listContainer}>
+            <Text style={styles.listItem}>• {t('PushNotifications.BulletOne') || 'New credential offers'}</Text>
+            <Text style={styles.listItem}>• {t('PushNotifications.BulletTwo') || 'New proof requests'}</Text>
+            <Text style={styles.listItem}>• {t('PushNotifications.BulletThree') || 'Updates to your credentials'}</Text>
+            <Text style={styles.listItem}>• {t('PushNotifications.BulletFour') || 'New messages'}</Text>
           </View>
 
           <DigiCredToggle
@@ -114,11 +99,14 @@ const PushNotifications: React.FC = () => {
           />
 
           <DigiCredButton
-            title={t('Global.Continue')}
+            title={'CONTINUE'}
             onPress={onContinue}
             loading={isLoading}
             testID={testIdWithKey('Continue')}
             accessibilityLabel={t('Global.Continue')}
+            variant="primary"
+            customStyle={styles.buttonCustomStyle}
+            customTextStyle={styles.buttonTextCustomStyle}
           />
         </CardModal>
       </View>
@@ -129,39 +117,68 @@ const PushNotifications: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
   },
-  spacer: {
-    flex: 1,
+  cardModal: {
+    backgroundColor: DigiCredColors.homeNoChannels.itemBackground,
+    borderRadius: 16,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 2, height: 4 },
+    shadowOpacity: 0.48,
+    shadowRadius: 12,
+    elevation: 8,
+    width: '98%',
   },
   title: {
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: '400',
     color: DigiCredColors.text.primary,
-    marginBottom: 12,
+    marginBottom: 10,
+    lineHeight: 24,
+    fontFamily: 'Open Sans',
   },
   subtitle: {
-    fontSize: 14,
-    color: DigiCredColors.text.secondary,
+    fontSize: 16,
+    fontFamily: 'Open Sans',
+    color: DigiCredColors.text.onboardingSubtitle,
+    lineHeight: 24,
     marginBottom: 16,
   },
-  bulletList: {
-    marginBottom: 8,
+  listContainer: {
+    marginBottom: 20,
   },
-  bulletItem: {
-    flexDirection: 'row',
-    marginBottom: 12,
+  listItem: {
+    fontSize: 16,
+    fontFamily: 'Open Sans',
+    color: DigiCredColors.text.onboardingSubtitle,
+    lineHeight: 24,
+    marginBottom: 4,
   },
-  bullet: {
+  buttonCustomStyle: {
+    display: 'flex',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+    backgroundColor: DigiCredColors.button.continueButton,
+    minWidth: 154,
+    height: 48,
+    opacity: 1,
+    alignSelf: 'flex-start',
+    marginTop: 10,
+  },
+  buttonTextCustomStyle: {
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+    fontWeight: '700',
+    lineHeight: 24,
     color: DigiCredColors.text.primary,
-    fontSize: 14,
-    marginRight: 8,
-  },
-  bulletText: {
-    flex: 1,
-    color: DigiCredColors.text.secondary,
-    fontSize: 14,
-    lineHeight: 20,
+    textTransform: 'none',
+    letterSpacing: 0,
   },
 })
 

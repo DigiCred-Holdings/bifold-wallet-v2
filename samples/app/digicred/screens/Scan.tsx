@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { Platform, View, StyleSheet, Text, StatusBar, TouchableOpacity, Share, ScrollView, useWindowDimensions } from 'react-native'
 import { PERMISSIONS, Permission, RESULTS, Rationale, check, request } from 'react-native-permissions'
 import Toast from 'react-native-toast-message'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import {
   testIdWithKey,
@@ -32,6 +31,7 @@ import type { PermissionStatus } from 'react-native-permissions'
 type PermissionContract = (permission: Permission, rationale?: Rationale) => Promise<PermissionStatus>
 
 import { GradientBackground } from '../components'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 // Hardcoded colors to avoid circular dependency with theme
 const Colors = {
@@ -195,7 +195,6 @@ const Scan: React.FC<ScanProps> = ({ navigation }) => {
             <Text style={styles.headerTitle}>Scan QR Code</Text>
             <View style={styles.headerSpacer} />
           </View>
-
           <View style={styles.centerContent}>
             <View style={styles.iconContainer}>
               <Icon name="camera" size={48} color={Colors.button.primary} />
@@ -370,7 +369,6 @@ const Scan: React.FC<ScanProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
   },
   scanContainer: {
     flex: 1,
@@ -449,9 +447,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  // Camera/Scan styles
   cameraContainer: {
     flex: 1,
+    marginTop: 50,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -462,7 +460,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingTop: 50,
     paddingVertical: 12,
   },
   scanHeaderTitle: {
@@ -485,14 +482,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     textAlign: 'center',
-  },
-  errorBanner: {
-    backgroundColor: 'rgba(244, 67, 54, 0.9)',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   errorText: {
     color: '#FFFFFF',

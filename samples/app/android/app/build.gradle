@@ -140,9 +140,8 @@ dependencies {
 
     implementation 'com.google.mlkit:barcode-scanning:17.2.0'
 
-    // Firebase for push notifications
-    implementation platform('com.google.firebase:firebase-bom:32.7.0')
-    implementation 'com.google.firebase:firebase-messaging'
+    // Force Kotlin stdlib common to be resolved for dependency locking
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-common:$rootProject.ext.kotlinVersion"
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

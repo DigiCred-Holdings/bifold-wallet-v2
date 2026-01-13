@@ -7,7 +7,7 @@ buildscript {
         compileSdkVersion = 34
         targetSdkVersion = 34
         ndkVersion = "25.1.8937393"
-        kotlinVersion = "1.8.22"
+        kotlinVersion = "2.0.21"
 
     }
     repositories {
@@ -17,7 +17,8 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("com.google.gms:google-services:4.4.0")
+        classpath("com.google.gms:google-services:4.4.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
 
@@ -40,12 +41,13 @@ allprojects {
 }
 subprojects {
     configurations.all {
-       it.resolutionStrategy.activateDependencyLocking()
-       // Force Kotlin version to avoid conflicts
-       resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
-       resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
-       resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
-       resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22'
+        it.resolutionStrategy {
+            activateDependencyLocking()
+            // Force consistent Kotlin versions across all dependencies
+            force "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.ext.kotlinVersion"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.ext.kotlinVersion"
+        }
     }
 }
 

@@ -5,21 +5,19 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DeviceEventEmitter, View, StyleSheet } from 'react-native'
-
 import {
-  TOKENS,
-  useServices,
   useNetwork,
   useStore,
   DispatchAction,
-  EventTypes,
   BifoldError,
-  TabStackParams,
-  TabStacks,
   connectFromScanOrDeepLink,
   testIdWithKey,
   useIncomingCallHandler,
 } from '@bifold/core'
+import { TOKENS, useServices } from '../../../../packages/core/src/container-api'
+import { TabStacks } from '../../../../packages/core/src/types/navigators'
+import { EventTypes } from '../../../../packages/core/src/constants'
+import { TabStackParams } from '../../../../packages/core/src/types/navigators'
 
 import { DigiCredTabBar } from '../components'
 import { GradientBackground } from '../components'
@@ -84,7 +82,6 @@ const DigiCredTabStack: React.FC = () => {
         )
         DeviceEventEmitter.emit(EventTypes.ERROR_ADDED, error)
       }
-
       dispatch({
         type: DispatchAction.DEEP_LINK_PROCESSED,
       })
@@ -106,12 +103,7 @@ const DigiCredTabStack: React.FC = () => {
       <View style={styles.container}>
         <Tab.Navigator
           initialRouteName={TabStacks.HomeStack}
-          tabBar={(props) => (
-            <DigiCredTabBar
-              {...props}
-              badges={{ [TabStacks.HomeStack]: homeBadgeCount }}
-            />
-          )}
+          tabBar={(props) => <DigiCredTabBar {...props} badges={{ [TabStacks.HomeStack]: homeBadgeCount }} />}
           screenOptions={{
             headerShown: false,
           }}
@@ -139,7 +131,11 @@ const DigiCredTabStack: React.FC = () => {
             component={SettingStack}
             options={{
               headerShown: false,
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
               tabBarAccessibilityLabel: t('TabStack.Settings'),
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
               tabBarTestID: testIdWithKey(t('TabStack.Settings')),
             }}
           />
