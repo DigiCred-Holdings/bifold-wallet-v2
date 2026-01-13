@@ -39,14 +39,12 @@ const PushNotifications: React.FC = () => {
       if (notificationsEnabled && enablePushNotifications) {
         try {
           const result = await enablePushNotifications.setup()
-          console.log('[PushNotifications] Permission result:', result)
           // Update with actual permission result
           dispatch({
             type: DispatchAction.USE_PUSH_NOTIFICATIONS,
             payload: [result === 'granted'],
           })
-        } catch (permError) {
-          console.warn('[PushNotifications] Permission request failed:', permError)
+        } catch (_permError) {
           // Still allow to continue even if permission request fails
           dispatch({
             type: DispatchAction.USE_PUSH_NOTIFICATIONS,
@@ -65,8 +63,7 @@ const PushNotifications: React.FC = () => {
       dispatch({
         type: DispatchAction.DID_CONSIDER_PUSH_NOTIFICATIONS,
       })
-    } catch (error) {
-      console.error('[PushNotifications] Error:', error)
+    } catch (_error) {
       // Even on error, mark as considered to not block onboarding
       dispatch({
         type: DispatchAction.DID_CONSIDER_PUSH_NOTIFICATIONS,

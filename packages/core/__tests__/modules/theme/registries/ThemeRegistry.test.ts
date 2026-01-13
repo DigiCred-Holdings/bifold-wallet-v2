@@ -163,7 +163,7 @@ describe('ThemeRegistry', () => {
         registry.register(manifest1)
 
         // Get the theme to cache it
-        const resolved1 = registry.get('theme-1')
+        registry.get('theme-1')
 
         // Re-register with updated name
         const manifest2 = createMockManifest('theme-1', 'Theme 1 Updated')

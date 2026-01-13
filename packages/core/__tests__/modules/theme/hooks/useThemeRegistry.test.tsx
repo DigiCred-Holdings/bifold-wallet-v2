@@ -6,7 +6,6 @@
 
 import React from 'react'
 import { renderHook } from '@testing-library/react-native'
-import { Text } from 'react-native'
 
 import { useThemeRegistry, useOptionalThemeRegistry } from '../../../../src/modules/theme/hooks/useThemeRegistry'
 import { ThemeRegistry } from '../../../../src/modules/theme/registries/ThemeRegistry'
@@ -17,9 +16,11 @@ import { ThemeRegistryProvider } from '../../../../src/modules/theme/providers/T
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const createWrapper = (registry: ThemeRegistry) => {
-  return ({ children }: { children: React.ReactNode }) => (
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <ThemeRegistryProvider registry={registry}>{children}</ThemeRegistryProvider>
   )
+  Wrapper.displayName = 'TestWrapper'
+  return Wrapper
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

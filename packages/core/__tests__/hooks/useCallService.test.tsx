@@ -5,7 +5,7 @@
  */
 
 import React from 'react'
-import { renderHook, act, waitFor } from '@testing-library/react-native'
+import { renderHook, act } from '@testing-library/react-native'
 
 import { useCallService } from '../../src/hooks/useCallService'
 import { BasicAppContext } from '../helpers/app'
@@ -93,9 +93,10 @@ describe('useCallService', () => {
       expect(result.current.isInCall).toBe(false)
     })
 
-    it('should create CallService when agent has webrtc module', () => {
+    it('should create CallService when agent has webrtc module', async () => {
       renderHook(() => useCallService(), { wrapper })
 
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { CallService } = require('../../src/services/CallService')
       expect(CallService).toHaveBeenCalledWith(
         expect.objectContaining({

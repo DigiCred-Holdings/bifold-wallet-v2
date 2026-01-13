@@ -6,7 +6,7 @@
 
 import React from 'react'
 import { renderHook, act, waitFor } from '@testing-library/react-native'
-import { AppState, AppStateStatus } from 'react-native'
+import { AppState } from 'react-native'
 
 import { useWorkflows, useWorkflowTemplates, usePendingWorkflows } from '../../src/hooks/useWorkflows'
 import { BasicAppContext } from '../helpers/app'
@@ -69,15 +69,11 @@ jest.mock('../../src/contexts/store', () => ({
 }))
 
 // Mock AppState
-let appStateCallback: ((state: AppStateStatus) => void) | null = null
 const mockAppStateSubscription = {
   remove: jest.fn(),
 }
 
-jest.spyOn(AppState, 'addEventListener').mockImplementation((type, callback) => {
-  if (type === 'change') {
-    appStateCallback = callback
-  }
+jest.spyOn(AppState, 'addEventListener').mockImplementation(() => {
   return mockAppStateSubscription
 })
 
@@ -98,7 +94,7 @@ describe('useWorkflows', () => {
     jest.clearAllMocks()
     mockService.listInstances.mockResolvedValue([])
     mockService.start.mockResolvedValue(createMockWorkflowInstance())
-    appStateCallback = null
+    // Reset mocks
     // Reset AppState.currentState
     Object.defineProperty(AppState, 'currentState', {
       value: 'active',
@@ -518,7 +514,7 @@ describe('usePendingWorkflows', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockService.getPendingWorkflows.mockResolvedValue([])
-    appStateCallback = null
+    // Reset mocks
     Object.defineProperty(AppState, 'currentState', {
       value: 'active',
       writable: true,

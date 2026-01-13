@@ -3,7 +3,7 @@ import { useAgent } from '@credo-ts/react-hooks'
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Platform, View, StyleSheet, Text, StatusBar, TouchableOpacity, Share, ScrollView, useWindowDimensions } from 'react-native'
+import { Platform, View, StyleSheet, Text, StatusBar, TouchableOpacity, Share, useWindowDimensions } from 'react-native'
 import { PERMISSIONS, Permission, RESULTS, Rationale, check, request } from 'react-native-permissions'
 import Toast from 'react-native-toast-message'
 

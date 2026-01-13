@@ -5,7 +5,7 @@
  */
 
 import React from 'react'
-import { renderHook, act } from '@testing-library/react-native'
+import { renderHook } from '@testing-library/react-native'
 import { Text } from 'react-native'
 import { render } from '@testing-library/react-native'
 

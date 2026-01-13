@@ -5,7 +5,7 @@
  */
 
 import { TabBarRegistry, createTabBarRegistry, ITabBarRegistry } from '../../../../src/modules/theme/registries/TabBarRegistry'
-import { ITabBarConfig, ITabBarStyle, TabBarVariant } from '../../../../src/modules/theme/types'
+import { ITabBarConfig, TabBarVariant } from '../../../../src/modules/theme/types'
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TEST DATA

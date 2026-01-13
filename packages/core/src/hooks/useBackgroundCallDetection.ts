@@ -3,7 +3,6 @@ import { AppState, AppStateStatus } from 'react-native'
 import { useAgent } from '@credo-ts/react-hooks'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { WebRTCEvents } from '@ajna-inc/webrtc'
 import { RootStackParams, Screens } from '../types/navigators'
 
 interface UseBackgroundCallDetectionOptions {

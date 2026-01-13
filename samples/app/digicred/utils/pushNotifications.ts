@@ -1,5 +1,4 @@
 import { Platform, PermissionsAndroid } from 'react-native'
-import type { Agent } from '@credo-ts/core'
 
 type NotificationPermissionState = 'denied' | 'granted' | 'unknown'
 
@@ -12,13 +11,11 @@ export const getNotificationPermissionStatus = async (): Promise<NotificationPer
       const result = await PermissionsAndroid.check(
         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
       )
-      console.log('[PushNotifications] Check permission result:', result)
       return result ? 'granted' : 'denied'
     }
     // For older Android or iOS, return granted (handled by system)
     return 'granted'
-  } catch (error) {
-    console.error('[PushNotifications] Error checking permission status:', error)
+  } catch (_error) {
     return 'unknown'
   }
 }
@@ -27,12 +24,8 @@ export const getNotificationPermissionStatus = async (): Promise<NotificationPer
  * Request notification permission from the user
  */
 export const requestNotificationPermission = async (): Promise<NotificationPermissionState> => {
-  console.log('[PushNotifications] Requesting permission, Platform:', Platform.OS, 'Version:', Platform.Version)
-
   try {
     if (Platform.OS === 'android' && Platform.Version >= 33) {
-      console.log('[PushNotifications] Requesting Android POST_NOTIFICATIONS permission')
-
       const result = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
         {
@@ -42,8 +35,6 @@ export const requestNotificationPermission = async (): Promise<NotificationPermi
           buttonNegative: 'Deny',
         }
       )
-
-      console.log('[PushNotifications] Android permission result:', result)
 
       if (result === PermissionsAndroid.RESULTS.GRANTED) {
         return 'granted'
@@ -56,10 +47,8 @@ export const requestNotificationPermission = async (): Promise<NotificationPermi
     }
 
     // For older Android versions or iOS, permission is granted by default
-    console.log('[PushNotifications] Permission granted by default (older Android or iOS)')
     return 'granted'
-  } catch (error) {
-    console.error('[PushNotifications] Error requesting permission:', error)
+  } catch (_error) {
     return 'denied'
   }
 }
@@ -68,24 +57,16 @@ export const requestNotificationPermission = async (): Promise<NotificationPermi
  * Toggle push notifications on/off
  * This should register/unregister the device token with the mediator
  */
-export const togglePushNotifications = async (enabled: boolean, agent: Agent<any>): Promise<void> => {
+export const togglePushNotifications = async (enabled: boolean): Promise<void> => {
   try {
     if (enabled) {
-      // Push notifications enabled
-      // The @credo-ts/push-notifications module should handle FCM token registration
-      // with the mediator automatically when push notifications are enabled
-      console.log('[PushNotifications] Push notifications enabled')
-
-      // Find the push notifications module if available
-      // This would typically use the PushNotificationsModule from @credo-ts/push-notifications
-      // to register the device token with the mediator
+      // TODO: Push notifications enabled - register FCM token with mediator
+      // The @credo-ts/push-notifications module should handle this
     } else {
-      // Unregister from push notifications
-      console.log('[PushNotifications] Push notifications disabled')
       // TODO: Unregister token from mediator
     }
-  } catch (error) {
-    console.error('[PushNotifications] Error toggling push notifications:', error)
+  } catch (_error) {
+    // Silently handle toggle errors
   }
 }
 

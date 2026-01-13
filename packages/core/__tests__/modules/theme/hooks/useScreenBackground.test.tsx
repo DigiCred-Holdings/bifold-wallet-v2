@@ -54,9 +54,11 @@ const screenMapping: IScreenBackgrounds = {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const createWrapper = (registry: ThemeRegistry) => {
-  return ({ children }: { children: React.ReactNode }) => (
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <ThemeRegistryProvider registry={registry}>{children}</ThemeRegistryProvider>
   )
+  Wrapper.displayName = 'TestWrapper'
+  return Wrapper
 }
 
 const createRegistryWithBackgrounds = (): ThemeRegistry => {

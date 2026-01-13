@@ -5,15 +5,11 @@
  * and routes records to appropriate handlers.
  */
 
-import { ConnectionRecord, DidExchangeRole, DidExchangeState } from '@credo-ts/core'
-
 import { WorkflowRegistry } from '../../../src/modules/workflow/WorkflowRegistry'
 import {
   IWorkflowHandler,
   WorkflowType,
   WorkflowAction,
-  MessageContext,
-  ActionContext,
   NotificationItem,
 } from '../../../src/modules/workflow/types'
 import { ExtendedChatMessage, CallbackType } from '../../../src/components/chat/ChatMessage'
@@ -658,6 +654,7 @@ describe('WorkflowRegistry', () => {
 
 describe('createWorkflowRegistry()', () => {
   it('should create a new WorkflowRegistry instance', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { createWorkflowRegistry } = require('../../../src/modules/workflow/WorkflowRegistry')
 
     const registry = createWorkflowRegistry()

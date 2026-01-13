@@ -19,7 +19,7 @@ import {
   DidExchangeState,
 } from '@credo-ts/core'
 
-import { WorkflowType } from '../../src/modules/workflow/types'
+// WorkflowType available from '../../src/modules/workflow/types' if needed
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MOCK WORKFLOW INSTANCE RECORDS
