@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import Svg, { Circle, Path } from 'react-native-svg'
+import Svg, { Path } from 'react-native-svg'
 import { ContentProps, ContentRegistry } from '../ContentRegistry'
 
 const GaugeContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
