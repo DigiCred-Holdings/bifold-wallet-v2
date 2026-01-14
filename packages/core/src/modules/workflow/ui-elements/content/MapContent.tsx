@@ -1,19 +1,32 @@
+/* eslint-disable no-console */
 import React from 'react'
 import { View, Text, Linking, TouchableOpacity } from 'react-native'
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 import { ContentProps, ContentRegistry } from '../ContentRegistry'
 
 const MapContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
-  const latitude = parseFloat(item.latitude || '0')
-  const longitude = parseFloat(item.longitude || '0')
-  const title = item.title || 'Location'
+  // Parse coordinates as floats (they come as strings from JSON) TODO swap them for prod
+  const latitude = parseFloat(item.longitude || '0')
+  const longitude = parseFloat(item.latitude || '0')
 
-  if (!latitude || !longitude) {
-    return null
+  console.log('🗺️ Map coordinates:', { latitude, longitude, title: item.title })
+
+  // Validate coordinates (AFTER parsing)
+  const isValidLat = !isNaN(latitude) && latitude >= -90 && latitude <= 90
+  const isValidLon = !isNaN(longitude) && longitude >= -180 && longitude <= 180
+
+  if (!isValidLat || !isValidLon) {
+    console.warn('⚠️ Invalid map coordinates:', { latitude, longitude })
+    return (
+      <View style={styles.fieldContainer}>
+        <Text style={[styles.description, { color: colors.text }]}>
+          Invalid map coordinates (lat: {latitude}, lon: {longitude})
+        </Text>
+      </View>
+    )
   }
 
   const handleOpenMaps = () => {
-    // Open in device's default maps app
     const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
     Linking.openURL(url)
   }
@@ -21,11 +34,9 @@ const MapContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
   return (
     <View style={styles.fieldContainer}>
       {item.text && <Text style={[styles.label, { color: colors.text, marginBottom: 8 }]}>{item.text}</Text>}
-
       <TouchableOpacity onPress={handleOpenMaps} activeOpacity={0.9}>
         <View style={{ width: '100%', height: 200, borderRadius: 8, overflow: 'hidden' }}>
           <MapView
-            provider={PROVIDER_GOOGLE}
             style={{ width: '100%', height: '100%' }}
             initialRegion={{
               latitude,
@@ -35,11 +46,11 @@ const MapContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
             }}
             scrollEnabled={false}
             zoomEnabled={false}
+            rotateEnabled={false}
+            pitchEnabled={false}
           >
-            <Marker coordinate={{ latitude, longitude }} title={title} />
+            <Marker coordinate={{ latitude, longitude }} title={item.title} />
           </MapView>
-
-          {/* Overlay to make entire map tappable */}
           <View
             style={{
               position: 'absolute',
@@ -51,7 +62,6 @@ const MapContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
             }}
           />
         </View>
-
         <Text style={[styles.description, { color: colors.primary, textAlign: 'center', marginTop: 8 }]}>
           Tap to open in Maps
         </Text>
