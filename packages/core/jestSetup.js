@@ -11,6 +11,22 @@ import path from 'path'
 mockRNDeviceInfo.getVersion = jest.fn(() => '1')
 mockRNDeviceInfo.getBuildNumber = jest.fn(() => '1')
 
+jest.mock('react-native-share', () => ({
+  open: jest.fn(() => Promise.resolve()),
+  shareSingle: jest.fn(() => Promise.resolve()),
+  isPackageInstalled: jest.fn(() => Promise.resolve({ isInstalled: false })),
+  default: {
+    open: jest.fn(() => Promise.resolve()),
+    shareSingle: jest.fn(() => Promise.resolve()),
+  },
+}))
+jest.mock('react-native-share/src/codegenSpec/NativeRNShare', () => ({}))
+
+jest.mock('expo-av', () => ({
+  Video: () => null,
+  ResizeMode: { CONTAIN: 'contain', COVER: 'cover', STRETCH: 'stretch' },
+  Audio: {},
+}))
 jest.mock('react-native-safe-area-context', () => mockSafeAreaContext)
 jest.mock('react-native-device-info', () => mockRNDeviceInfo)
 jest.mock('@react-native-community/netinfo', () => mockRNCNetInfo)

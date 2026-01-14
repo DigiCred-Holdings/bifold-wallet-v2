@@ -39,19 +39,13 @@ allprojects {
         maven { url 'https://www.jitpack.io' }
     }
 }
-subprojects {
-    configurations.all {
-        it.resolutionStrategy {
-            activateDependencyLocking()
-            // Force consistent Kotlin versions across all dependencies
-            force "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
-            force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.ext.kotlinVersion"
-            force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.ext.kotlinVersion"
-        }
-    }
-}
+// subprojects {
+//     configurations.all {
+//        it.resolutionStrategy.activateDependencyLocking()
+//     }
+// }
 
-dependencyLocking {
-    lockAllConfigurations()
-}
+// dependencyLocking {
+//     lockAllConfigurations()
+// }
 
