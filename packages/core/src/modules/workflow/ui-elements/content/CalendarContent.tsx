@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 import React from 'react'
-import { View, Text, TouchableOpacity, Alert, Platform } from 'react-native'
+import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { ContentProps, ContentRegistry } from '../ContentRegistry'
-import AddCalendarEvent from 'react-native-add-calendar-event'
+import * as AddCalendarEvent from 'react-native-add-calendar-event'
 
 const CalendarContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
   const handleAddToCalendar = async () => {
@@ -30,25 +31,15 @@ const CalendarContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
       }
 
       AddCalendarEvent.presentEventCreatingDialog(eventConfig)
-        .then((eventInfo) => {
-          console.log('Event added:', eventInfo)
+        .then((eventInfo: AddCalendarEvent.EventInfo) => {
+          console.log('✅ Event added:', eventInfo)
         })
-        .catch((error) => {
-          console.error('Error adding event:', error)
+        .catch((error: Error) => {
+          console.error('❌ Error adding event:', error)
+          Alert.alert('Error', 'Failed to add event to calendar')
         })
-
-      // Placeholder implementation:
-      Alert.alert(
-        'Add to Calendar',
-        `${
-          item.title || 'Event'
-        }\n\nStart: ${startDate.toLocaleString()}\nEnd: ${endDate.toLocaleString()}\n\nLocation: ${
-          item.location || 'N/A'
-        }`,
-        [{ text: 'OK' }]
-      )
     } catch (error) {
-      console.error('Error adding to calendar:', error)
+      console.error('❌ Error adding to calendar:', error)
       Alert.alert('Error', 'Failed to add event to calendar')
     }
   }

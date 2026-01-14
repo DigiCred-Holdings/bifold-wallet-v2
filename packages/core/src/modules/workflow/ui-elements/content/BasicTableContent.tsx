@@ -27,7 +27,8 @@ const BasicTableContent: React.FC<ContentProps> = ({ item, styles, colors }) => 
   })
 
   // Get column keys (excluding 'order')
-  const columnKeys = sortedHeader.map((h) => Object.keys(h).find((k) => k !== 'order') || '')
+  const columnKeys = rows.length > 0 ? Object.keys(rows[0]).sort() : []
+  const headerLabels = sortedHeader.map((h) => h.column1 || '')
 
   const borderStyle = showBorder
     ? {
@@ -44,7 +45,6 @@ const BasicTableContent: React.FC<ContentProps> = ({ item, styles, colors }) => 
         {/* Header Row */}
         <View style={{ flexDirection: 'row', backgroundColor: `${colors.primary}20` }}>
           {sortedHeader.map((col, index) => {
-            const key = columnKeys[index]
             return (
               <View
                 key={index}
@@ -56,7 +56,7 @@ const BasicTableContent: React.FC<ContentProps> = ({ item, styles, colors }) => 
                   showBorder && index > 0 && { borderLeftWidth: 1, borderLeftColor: colors.border },
                 ]}
               >
-                <Text style={[styles.formLabel, { color: colors.text, fontSize: 13 }]}>{col[key]}</Text>
+                <Text style={[styles.formLabel, { color: colors.text, fontSize: 13 }]}>{headerLabels[index]}</Text>
               </View>
             )
           })}

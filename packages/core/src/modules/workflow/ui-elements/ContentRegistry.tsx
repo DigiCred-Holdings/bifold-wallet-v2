@@ -1,5 +1,5 @@
+/* eslint-disable no-console */
 import React from 'react'
-import { ViewStyle } from 'react-native'
 
 // Base props all content types receive
 export interface ContentProps {
@@ -13,13 +13,17 @@ export interface ContentProps {
     [key: string]: any // Allow custom properties
   }
   onAction: (actionId: string, data?: any) => void
-  styles: Record<string, ViewStyle>
+  styles: Record<string, any>
   colors: {
     primary: string
     text: string
     background: string
     border: string
   }
+  formData?: Record<string, any>
+  onFieldChange?: (name: string, value: any) => void
+  FormFieldRegistry?: any
+  content?: any[]
 }
 
 export type ContentRenderer = React.FC<ContentProps>
@@ -45,6 +49,8 @@ class ContentRegistryClass {
       console.warn(`Unknown content type: ${type}`)
       return null
     }
+    console.log('✅ Found renderer for type:', type)
+
     return <Renderer {...props} />
   }
 

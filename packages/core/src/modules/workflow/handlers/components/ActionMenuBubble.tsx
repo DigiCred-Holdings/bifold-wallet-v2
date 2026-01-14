@@ -1,38 +1,49 @@
+/* eslint-disable no-console */
 /**
  * ActionMenuBubble Component
  *
- * Renders action menu messages with images, titles, text, buttons, and forms.
- * Ported from bifold-wallet-1 with enhanced styling for dark themes.
+ * Renders action menu messages using ContentRegistry and FormFieldRegistry.
+ * Enhanced with registry pattern for extensibility.
  */
 
 import React, { useState } from 'react'
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import { useTheme } from '../../../../contexts/theme'
-import { ActionMenuContentItem, ActionMenuFormField } from '../../types'
+import { ActionMenuContentItem } from '../../types'
+import { ContentRegistry, FormFieldRegistry } from '../../ui-elements'
 
 interface ActionMenuBubbleProps {
   content: ActionMenuContentItem[]
   workflowID: string
-  onActionPress: (actionId: string, workflowID: string, invitationLink?: string) => void
+  onActionPress: (actionId: string, workflowID: string, invitationLinkOrData?: string | any) => void
 }
 
 interface FormData {
-  [key: string]: string | Date | undefined
+  [key: string]: any
 }
 
 export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, workflowID, onActionPress }) => {
   const { ColorPalette } = useTheme()
   const [formData, setFormData] = useState<FormData>({})
 
-  // Dynamic styles based on theme
-  const themedStyles = StyleSheet.create({
+  console.log('🎨 ActionMenuBubble rendering with', content.length, 'items')
+  console.log('📝 Current form data:', formData)
+
+  const colors = {
+    primary: ColorPalette.brand.primary,
+    text: ColorPalette.brand.text,
+    background: ColorPalette.brand.secondaryBackground,
+    border: ColorPalette.brand.primary,
+  }
+
+  const styles = StyleSheet.create({
     bubble: {
-      backgroundColor: ColorPalette.grayscale.digicredBackgroundModal,
+      backgroundColor: ColorPalette.brand.secondaryBackground,
       borderRadius: 12,
       padding: 16,
       borderWidth: 1,
-      borderColor: ColorPalette.grayscale.digicredBackgroundModal,
+      borderColor: ColorPalette.brand.primary,
       width: 320,
       maxWidth: '100%',
     },
@@ -54,10 +65,6 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
       color: ColorPalette.brand.text,
       lineHeight: 22,
     },
-    buttonContainer: {
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
     button: {
       paddingVertical: 14,
       paddingHorizontal: 20,
@@ -72,7 +79,7 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
       textAlign: 'center',
       color: ColorPalette.grayscale.white,
     },
-    textInput: {
+    input: {
       height: 48,
       borderColor: ColorPalette.brand.primary,
       borderWidth: 1.5,
@@ -83,28 +90,14 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
       color: ColorPalette.brand.text,
       fontSize: 15,
     },
-    radioButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
+    fieldContainer: {
       marginBottom: 12,
-      paddingVertical: 4,
     },
-    radioButtonIcon: {
-      width: 22,
-      height: 22,
-      borderRadius: 11,
-      borderWidth: 2,
-      borderColor: ColorPalette.brand.primary,
-      marginRight: 12,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    radioButtonIconSelected: {
-      backgroundColor: ColorPalette.brand.primary,
-    },
-    radioButtonText: {
-      fontSize: 15,
+    label: {
+      fontSize: 14,
+      fontWeight: '600',
       color: ColorPalette.brand.text,
+      marginBottom: 8,
     },
     formLabel: {
       fontSize: 14,
@@ -112,92 +105,132 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
       color: ColorPalette.brand.text,
       marginBottom: 8,
     },
+    radioRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+      paddingVertical: 4,
+    },
+    radioOuter: {
+      width: 22,
+      height: 22,
+      borderRadius: 11,
+      borderWidth: 2,
+      marginRight: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    radioInner: {
+      width: 10,
+      height: 10,
+      borderRadius: 5,
+    },
+    radioLabel: {
+      fontSize: 15,
+    },
+    checkboxRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    checkbox: {
+      width: 24,
+      height: 24,
+      borderWidth: 2,
+      borderRadius: 4,
+      marginRight: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    checkboxLabel: {
+      fontSize: 15,
+    },
+    mcqRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 6,
+    },
+    mcqBox: {
+      width: 20,
+      height: 20,
+      borderWidth: 2,
+      borderRadius: 4,
+      marginRight: 10,
+    },
+    mcqLabel: {
+      fontSize: 15,
+    },
+    dropdown: {
+      height: 48,
+      borderWidth: 1,
+      borderRadius: 8,
+      justifyContent: 'center',
+      paddingHorizontal: 12,
+    },
+    dropdownList: {
+      borderRadius: 8,
+      maxHeight: 200,
+    },
+    dropdownItem: {
+      padding: 12,
+      borderBottomWidth: 1,
+    },
+    dateButton: {
+      height: 48,
+      borderWidth: 1,
+      borderRadius: 8,
+      justifyContent: 'center',
+      paddingHorizontal: 12,
+    },
+    slider: {
+      width: '100%',
+      height: 40,
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   })
 
-  const renderFormField = (field: ActionMenuFormField, index: number) => {
-    if (!field) {
-      return null
-    }
+  const handleFieldChange = (name: string, value: any) => {
+    console.log('📝 Field changed:', name, '=', value)
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
-    switch (field.type) {
-      case 'text': {
-        return (
-          <TextInput
-            key={index}
-            style={themedStyles.textInput}
-            placeholder={field.label}
-            placeholderTextColor={ColorPalette.grayscale.lightGrey}
-            value={formData[field.name] ? formData[field.name]?.toString() : ''}
-            onChangeText={(text) => setFormData({ ...formData, [field.name]: text })}
-          />
-        )
-      }
-      case 'radio': {
-        return (
-          <View key={index}>
-            <Text style={themedStyles.formLabel}>{field.label}</Text>
-            {field.options?.map((option: string, optionIndex: number) => (
-              <TouchableOpacity
-                key={optionIndex}
-                style={themedStyles.radioButton}
-                onPress={() => setFormData({ ...formData, [field.name]: option })}
-              >
-                <View
-                  style={[
-                    themedStyles.radioButtonIcon,
-                    formData[field.name] === option && themedStyles.radioButtonIconSelected,
-                  ]}
-                />
-                <Text style={themedStyles.radioButtonText}>{option}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )
-      }
-      default:
-        return null
+  const handleAction = (actionId: string, data?: any) => {
+    console.log('🎯 Action triggered:', actionId, 'with data:', data)
+
+    if (typeof data === 'string' && data.length > 0) {
+      // It's an invitationLink - pass it
+      onActionPress(actionId, workflowID, data)
+    } else {
+      // No invitationLink - call with only 2 params
+      onActionPress(actionId, workflowID)
     }
   }
 
-  const renderContent = (item: ActionMenuContentItem, index: number) => {
-    switch (item.type) {
-      case 'image':
-        return item.url ? (
-          <Image key={index} source={{ uri: item.url }} style={themedStyles.image} resizeMode="contain" />
-        ) : null
-      case 'title':
-        return (
-          <Text key={index} style={themedStyles.title}>
-            {item.text}
-          </Text>
-        )
-      case 'text':
-        return (
-          <Text key={index} style={themedStyles.description}>
-            {item.text}
-          </Text>
-        )
-      case 'button':
-        return (
-          <TouchableOpacity
-            key={index}
-            style={themedStyles.button}
-            onPress={() => onActionPress(item.actionID ?? '', workflowID, item.invitationLink)}
-            activeOpacity={0.8}
-          >
-            <Text style={themedStyles.buttonText}>{item.label}</Text>
-          </TouchableOpacity>
-        )
-      case 'form':
+  return (
+    <View style={styles.bubble}>
+      {content.map((item, index) => {
+        console.log('🎨 Rendering item type:', item.type)
+
         return (
           <View key={index}>
-            {item.fields?.map((field: ActionMenuFormField, fieldIndex: number) => renderFormField(field, fieldIndex))}
+            {ContentRegistry.render(item.type, {
+              item,
+              onAction: handleAction,
+              styles,
+              colors,
+              // Pass form-related props to all content types
+              formData,
+              onFieldChange: handleFieldChange,
+              FormFieldRegistry,
+              content,
+            })}
           </View>
         )
-      default:
-        return null
-    }
-  }
-
-  return <View style={themedStyles.bubble}>{content.map((item, index) => renderContent(item, index))}</View>
+      })}
+    </View>
+  )
 }

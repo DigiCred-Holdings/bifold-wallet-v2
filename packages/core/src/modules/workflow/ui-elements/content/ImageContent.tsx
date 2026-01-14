@@ -6,10 +6,11 @@ const ImageContent: React.FC<ContentProps> = ({ item, styles }) => {
   if (!item.url) {
     return null
   }
+  const imageUrl = item.url.trim()
 
   return (
     <View style={styles.fieldContainer}>
-      <Image source={{ uri: item.url }} style={styles.image as ImageStyle} resizeMode="contain" />
+      <Image source={{ uri: imageUrl }} style={styles.image as ImageStyle} resizeMode="contain" />
     </View>
   )
 }

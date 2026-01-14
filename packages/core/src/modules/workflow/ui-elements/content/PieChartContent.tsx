@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import Svg, { Circle, G } from 'react-native-svg'
+import Svg, { Path, G } from 'react-native-svg'
 import { ContentProps, ContentRegistry } from '../ContentRegistry'
 
 interface SliceItem {
@@ -17,7 +17,8 @@ const PieChartContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
 
   const size = 200
   const radius = size / 2
-  const strokeWidth = radius
+  const centerX = size / 2
+  const centerY = size / 2
 
   // Calculate total for percentages
   const total = slices.reduce((sum, slice) => sum + slice.count, 0)
@@ -25,7 +26,30 @@ const PieChartContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
   // Predefined colors for slices
   const sliceColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
 
-  let currentAngle = -90 // Start at top
+  // Helper function to convert angle to coordinates
+  const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
+    const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0
+    return {
+      x: centerX + radius * Math.cos(angleInRadians),
+      y: centerY + radius * Math.sin(angleInRadians),
+    }
+  }
+
+  // Create pie slice path
+  const createPieSlice = (startAngle: number, endAngle: number) => {
+    const start = polarToCartesian(centerX, centerY, radius, endAngle)
+    const end = polarToCartesian(centerX, centerY, radius, startAngle)
+    const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1'
+
+    return [
+      `M ${centerX} ${centerY}`,
+      `L ${start.x} ${start.y}`,
+      `A ${radius} ${radius} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`,
+      'Z',
+    ].join(' ')
+  }
+
+  let currentAngle = 0
 
   return (
     <View style={styles.fieldContainer}>
@@ -37,32 +61,18 @@ const PieChartContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
 
       <View style={{ alignItems: 'center' }}>
         <Svg width={size} height={size}>
-          <G rotation={0} origin={`${radius}, ${radius}`}>
+          <G>
             {slices.map((slice, index) => {
               const percentage = (slice.count / total) * 100
               const angle = (percentage / 100) * 360
-
-              // Calculate stroke-dasharray for each slice
-              const circumference = 2 * Math.PI * radius
-              const strokeDasharray = `${(angle / 360) * circumference} ${circumference}`
-              const rotation = currentAngle
+              const startAngle = currentAngle
+              const endAngle = currentAngle + angle
 
               currentAngle += angle
 
-              return (
-                <Circle
-                  key={index}
-                  cx={radius}
-                  cy={radius}
-                  r={radius / 2}
-                  fill="none"
-                  stroke={sliceColors[index % sliceColors.length]}
-                  strokeWidth={strokeWidth}
-                  strokeDasharray={strokeDasharray}
-                  rotation={rotation}
-                  origin={`${radius}, ${radius}`}
-                />
-              )
+              const path = createPieSlice(startAngle, endAngle)
+
+              return <Path key={index} d={path} fill={sliceColors[index % sliceColors.length]} />
             })}
           </G>
         </Svg>

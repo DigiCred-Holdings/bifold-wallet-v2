@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react'
 import { ViewStyle } from 'react-native'
 
@@ -50,6 +51,8 @@ class FormFieldRegistryClass {
       console.warn(`Unknown form field type: ${type}`)
       return null
     }
+    console.log('✅ Found field renderer for type:', type)
+
     return <Renderer {...props} />
   }
 

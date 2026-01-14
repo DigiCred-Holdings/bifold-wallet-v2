@@ -4,22 +4,23 @@ import Slider from '@react-native-community/slider'
 import { FormFieldProps, FormFieldRegistry } from '../FormFieldRegistry'
 
 const SliderField: React.FC<FormFieldProps> = ({ field, value, onChange, styles, colors }) => {
-  const numValue = Number(value) || field.min || 0
+  const numValue = typeof value === 'string' ? parseFloat(value) : value || field.min || 0
 
   return (
     <View style={styles.fieldContainer}>
-      <Text style={[styles.label, { color: colors.text }]}>
-        {field.label}: {numValue}
-      </Text>
+      <Text style={[styles.label, { color: colors.text }]}>{field.label}</Text>
       <Slider
         style={styles.slider}
-        minimumValue={field.min || 0}
-        maximumValue={field.max || 100}
         value={numValue}
-        onValueChange={(v: number) => onChange(Math.round(v))}
+        onSlidingComplete={(val) => onChange(Math.round(val).toString())}
+        minimumValue={field.min}
+        maximumValue={field.max}
+        step={1}
         minimumTrackTintColor={colors.primary}
+        maximumTrackTintColor={colors.border}
         thumbTintColor={colors.primary}
       />
+      <Text style={[styles.label, { color: colors.text, textAlign: 'center' }]}>{Math.round(numValue)}</Text>
     </View>
   )
 }
