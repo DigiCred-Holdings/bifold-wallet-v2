@@ -5,6 +5,43 @@
 
 set -e
 
+# Create .env file from Xcode Cloud environment variables
+# react-native-config reads from .env file, not shell environment variables
+echo "📝 Creating .env file from Xcode Cloud environment variables..."
+ENV_FILE="$CI_PRIMARY_REPOSITORY_PATH/samples/app/.env"
+
+if [ -z "$MEDIATOR_URL" ]; then
+    echo "❌ Error: MEDIATOR_URL environment variable is not set!"
+    echo "Please add this in Xcode Cloud: App Store Connect → Xcode Cloud → Manage Workflows → Environment Variables"
+    exit 1
+fi
+
+cat > "$ENV_FILE" << EOF
+MEDIATOR_URL=$MEDIATOR_URL
+MEDIATOR_USE_PUSH_NOTIFICATIONS=${MEDIATOR_USE_PUSH_NOTIFICATIONS:-true}
+TURN_SERVER_URL=${TURN_SERVER_URL:-}
+TURN_SERVER_URL_TCP=${TURN_SERVER_URL_TCP:-}
+TURN_SERVER_USERNAME=${TURN_SERVER_USERNAME:-}
+TURN_SERVER_PASSWORD=${TURN_SERVER_PASSWORD:-}
+EOF
+
+echo "✅ .env file created:"
+cat "$ENV_FILE"
+
+# Decode GoogleService-Info.plist from environment variable
+echo "🔥 Setting up Firebase configuration..."
+if [ -n "$GOOGLE_SERVICE_INFO_PLIST_BASE64" ]; then
+    echo "Decoding GoogleService-Info.plist from environment variable..."
+    echo "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 -d > "$CI_PRIMARY_REPOSITORY_PATH/samples/app/ios/AriesBifold/GoogleService-Info.plist"
+    echo "GoogleService-Info.plist created successfully"
+    # Validate the plist
+    plutil -lint "$CI_PRIMARY_REPOSITORY_PATH/samples/app/ios/AriesBifold/GoogleService-Info.plist" && echo "Valid plist file"
+else
+    echo "❌ Error: GOOGLE_SERVICE_INFO_PLIST_BASE64 environment variable is not set!"
+    echo "Please add this secret in Xcode Cloud: App Store Connect → Xcode Cloud → Manage Workflows → Environment Variables"
+    exit 1
+fi
+
 echo "🔧 Installing Homebrew dependencies..."
 
 # Install Node.js via Homebrew
