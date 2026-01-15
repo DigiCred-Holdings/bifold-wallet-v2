@@ -49,6 +49,16 @@ type GenerateOnboardingWorkflowStepsFn = (
   agent: Agent | null
 ) => Array<OnboardingTask>
 
+interface GradientBackgroundProps {
+  children: React.ReactNode
+  style?: import('react-native').StyleProp<import('react-native').ViewStyle>
+  colors?: string[]
+  locations?: number[]
+  start?: { x: number; y: number }
+  end?: { x: number; y: number }
+  buttonPurple?: boolean
+}
+
 type ProofRequestTemplateFn = (useDevTemplates: boolean) => Array<ProofRequestTemplate>
 
 export const PROOF_TOKENS = {
@@ -160,6 +170,7 @@ export const COMPONENT_TOKENS = {
   COMPONENT_GRADIENT_BACKGROUND: 'component.gradient-background',
   COMPONENT_ABOUT_INSTITUTION: 'component.about-institution',
   COMPONENT_CREDENTIAL_BUTTONS: 'component.credential-buttons',
+  COMPONENT_SNACK_BAR_MESSAGE: 'component.snackbar-message',
 } as const
 
 export const NOTIFICATION_TOKENS = {
@@ -312,7 +323,7 @@ export type TokenMapping = {
   [TOKENS.COMPONENT_RECORD]: React.FC
   [TOKENS.COMPONENT_CONTACT_LIST_ITEM]: React.FC<ContactListItemProps>
   [TOKENS.COMPONENT_CONTACT_DETAILS_CRED_LIST_ITEM]: React.FC<ContactCredentialListItemProps>
-  [COMPONENT_TOKENS.COMPONENT_GRADIENT_BACKGROUND]: React.FC<{ children: React.ReactNode }>
+  [COMPONENT_TOKENS.COMPONENT_GRADIENT_BACKGROUND]: React.FC<GradientBackgroundProps>
   [COMPONENT_TOKENS.COMPONENT_ABOUT_INSTITUTION]: React.FC<{
     title: string
     content: string
@@ -321,6 +332,13 @@ export type TokenMapping = {
     isProcessing: boolean
     onAccept: () => void
     onDecline: () => void
+    isDisabled: boolean
+  }>
+
+  [COMPONENT_TOKENS.COMPONENT_SNACK_BAR_MESSAGE]: React.FC<{
+    message: string
+    type: any
+    showIcon?: boolean
   }>
 
   [TOKENS.INLINE_ERRORS]: InlineErrorConfig

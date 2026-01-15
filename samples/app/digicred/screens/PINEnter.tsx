@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -10,8 +11,7 @@ import {
   Dimensions,
 } from 'react-native'
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+
 import { useAuth, useStore, DispatchAction, testIdWithKey } from '@bifold/core'
 import { EventTypes } from '../../../../packages/core/src/constants'
 import { GradientBackground, DigiCredButton, CardModal, DigiCredInput } from '../components'
@@ -171,11 +171,8 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
                 <Text style={styles.orText}>{t('PINEnter.Or') || 'OR'}</Text>
                 <View style={[styles.orLine, { width: rightLineWidth }]} />
               </View>
-              <LinearGradient
-                colors={DigiCredColors.homeNoChannels.buttonGradient}
-                locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+              <GradientBackground
+                buttonPurple
                 style={[styles.figmaButton, { width: buttonWidth, height: 55 }]}
               >
                 <DigiCredButton
@@ -188,7 +185,7 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
                   testID={testIdWithKey('UnlockWithBiometrics')}
                   accessibilityLabel={t('PINEnter.UnlockWithBiometrics')}
                 />
-              </LinearGradient>
+              </GradientBackground>
             </>
           )}
         </View>
@@ -226,12 +223,9 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
                   customTextStyle={styles.figmaButtonText}
                 />
 
-                <LinearGradient
-                  colors={DigiCredColors.homeNoChannels.buttonGradient}
-                  locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={[styles.figmaButton, { height: 50 }]}
+                <GradientBackground
+                  buttonPurple
+                  style={[styles.figmaButton, { height: 50, overflow: 'hidden' }]}
                 >
                   <DigiCredButton
                     title={t('PINEnter.Unlock') || 'UNLOCK'}
@@ -239,16 +233,10 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
                     disabled={PIN.length < minPINLength}
                     loading={isLoading}
                     variant="primary"
-                    customStyle={{
-                      backgroundColor: 'transparent',
-                      borderWidth: 0,
-                      height: '100%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
+                    customStyle={styles.gradientBtn}
                     customTextStyle={styles.figmaButtonText}
                   />
-                </LinearGradient>
+                </GradientBackground>
               </View>
             </CardModal>
           </View>
@@ -298,18 +286,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'stretch',
     backgroundColor: 'transparent',
+    flexWrap: 'nowrap',
+    flexShrink: 1,
   },
   figmaButtonTextWrapper: {
     backgroundColor: 'transparent',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    flexWrap: 'nowrap',
+  },
+  gradientBtn: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   figmaButtonText: {
     color: DigiCredColors.toggle.thumb,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
-    lineHeight: 20,
+    lineHeight: 22,
   },
   orContainer: {
     flexDirection: 'row',

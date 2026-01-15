@@ -11,7 +11,7 @@ interface SnackMessageProps {
   showIcon?: boolean
 }
 
-const SnackMessage: React.FC<SnackMessageProps> = ({ message, type, showIcon = true }) => {
+const SnackBarMessage: React.FC<SnackMessageProps> = ({ message, type, showIcon = true }) => {
   const backgroundColor = {
     error: '#C62828',
     success: '#6666CC',
@@ -71,9 +71,11 @@ const styles = StyleSheet.create({
   },
   messageText: {
     flex: 1,
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 24,
+    marginLeft: 10,
   },
 })
 
-export default SnackMessage
+export default SnackBarMessage

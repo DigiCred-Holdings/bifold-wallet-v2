@@ -26,6 +26,7 @@ import { Role } from '../types/chat'
 import { BasicMessageMetadata, basicMessageCustomMetadata } from '../types/metadata'
 import { RootStackParams, ContactStackParams, Screens, Stacks } from '../types/navigators'
 import { getConnectionName } from '../utils/helpers'
+import { TOKENS, useServices } from '../container-api'
 
 type ChatProps = StackScreenProps<ContactStackParams, Screens.Chat> | StackScreenProps<RootStackParams, Screens.Chat>
 
@@ -60,6 +61,9 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   const headerHeight = useHeaderHeight()
   const insets = useSafeAreaInsets()
 
+  const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
+
+  // Check if the connection supports WebRTC for video calls
   const { capabilities } = useConnectionCapabilities(connectionId)
   const registry = useOptionalWorkflowRegistry()
 
@@ -89,37 +93,9 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     [insets.top]
   )
 
-  const chatScreenConfig = useMemo(
-    () =>
-      createDCWalletChatConfig({
-        onCredentialAccept: async (credential, context) => {
-          try {
-            await context.agent.credentials.acceptOffer(credential.id)
-          } catch (e) {
-            swallow(e)
-          }
-        },
-        onCredentialDecline: async (credential, context) => {
-          try {
-            await context.agent.credentials.declineOffer(credential.id)
-          } catch (e) {
-            swallow(e)
-          }
-        },
-        onCredentialPress: (credential, context) => {
-          context.navigation.navigate('CredentialDetails', { credentialId: credential.id })
-        },
-      }),
-    []
-  )
-
-  useEffect(() => {
-    setTheirLabel(getConnectionName(connection, store.preferences.alternateContactNames))
-  }, [isFocused, connection, store.preferences.alternateContactNames])
-
-  useEffect(() => {
-    assertNetworkConnected()
-  }, [assertNetworkConnected])
+  const onDismiss = useCallback(() => {
+    setShowActionSlider(false)
+  }, [])
 
   const onShowMenu = useCallback(async () => {
     try {
@@ -148,6 +124,46 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     })
   }, [closeOverflowMenu, navigation, connectionId])
 
+  // Get chat screen config from registry
+  const chatScreenConfig = useMemo(() => {
+    return registry?.getChatScreenConfig()
+  }, [registry])
+
+  // Fallback chat screen config if registry doesn't provide one
+  const fallbackChatScreenConfig = useMemo(
+    () =>
+      createDCWalletChatConfig({
+        onCredentialAccept: async (credential, context) => {
+          try {
+            await context.agent.credentials.acceptOffer(credential.id)
+          } catch (e) {
+            swallow(e)
+          }
+        },
+        onCredentialDecline: async (credential, context) => {
+          try {
+            await context.agent.credentials.declineOffer(credential.id)
+          } catch (e) {
+            swallow(e)
+          }
+        },
+        onCredentialPress: (credential, context) => {
+          context.navigation.navigate('CredentialDetails', { credentialId: credential.id })
+        },
+      }),
+    []
+  )
+
+  const effectiveChatScreenConfig = chatScreenConfig || fallbackChatScreenConfig
+
+  useEffect(() => {
+    setTheirLabel(getConnectionName(connection, store.preferences.alternateContactNames))
+  }, [isFocused, connection, store.preferences.alternateContactNames])
+
+  useEffect(() => {
+    assertNetworkConnected()
+  }, [assertNetworkConnected])
+
   const headerRightIcons = useMemo(() => {
     return [
       {
@@ -161,24 +177,24 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   }, [openOverflowMenuAtEvent, t])
 
   useEffect(() => {
-    if (chatScreenConfig?.headerInsideBackground && chatScreenConfig?.headerRenderer) {
+    if (effectiveChatScreenConfig?.headerInsideBackground && effectiveChatScreenConfig?.headerRenderer) {
       navigation.setOptions({ headerShown: false })
       return
     }
 
-    if (chatScreenConfig?.headerRenderer) {
+    if (effectiveChatScreenConfig?.headerRenderer) {
       navigation.setOptions({
         header: () =>
-          chatScreenConfig.headerRenderer!.render({
+          effectiveChatScreenConfig.headerRenderer!.render({
             title: theirLabel,
             connectionId: connection?.id,
             onBack: () => navigation.goBack(),
             onInfo: () => navigation.navigate(Screens.ContactDetails as any, { connectionId: connection?.id }),
             onVideoCall: () =>
               navigation.navigate(Screens.VideoCall as any, { connectionId: connection?.id, video: true }),
-            showMenuButton: chatScreenConfig.showMenuButton,
-            showInfoButton: chatScreenConfig.showInfoButton,
-            showVideoButton: chatScreenConfig.showVideoButton && capabilities.supportsWebRTC,
+            showMenuButton: effectiveChatScreenConfig.showMenuButton,
+            showInfoButton: effectiveChatScreenConfig.showInfoButton,
+            showVideoButton: effectiveChatScreenConfig.showVideoButton && capabilities.supportsWebRTC,
             isLoadingCapabilities: capabilities.isLoading,
             onMenuPress: onShowMenu,
             rightIcons: headerRightIcons,
@@ -189,7 +205,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     navigation,
     theirLabel,
     connection?.id,
-    chatScreenConfig,
+    effectiveChatScreenConfig,
     onShowMenu,
     capabilities.supportsWebRTC,
     capabilities.isLoading,
@@ -325,36 +341,46 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   )
 
   const chatContent = (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? undefined : 'padding'}
-      keyboardVerticalOffset={headerHeight}
-    >
-      <GiftedChat
-        keyboardShouldPersistTaps="handled"
-        messages={chatMessages}
-        renderAvatar={() => null}
-        messageIdGenerator={(msg) => msg?._id.toString() || '0'}
-        renderMessage={(props) => <ChatMessage messageProps={props} />}
-        renderInputToolbar={(props) => renderInputToolbar(props, theme)}
-        renderSend={(props) => renderSend(props, theme)}
-        renderComposer={(props) => renderComposer(props, theme, t('Contacts.TypeHere'))}
-        disableComposer={!silentAssertConnectedNetwork()}
-        onSend={onSend}
-        user={{ _id: Role.me }}
-        renderActions={(props) => renderActions(props, theme, actions as any)}
-        onPressActionButton={actions && actions.length > 0 ? () => setShowActionSlider(true) : undefined}
-        messagesContainerStyle={{ paddingHorizontal: 12 }}
-      />
-      {showActionSlider && <ActionSlider onDismiss={() => setShowActionSlider(false)} actions={actions as any} />}
-    </KeyboardAvoidingView>
+    <GradientBackground>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? undefined : 'padding'}
+        keyboardVerticalOffset={headerHeight}
+      >
+        <GiftedChat
+          keyboardShouldPersistTaps={'handled'}
+          messages={chatMessages}
+          showAvatarForEveryMessage={true}
+          alignTop
+          renderAvatar={() => null}
+          messageIdGenerator={(msg) => msg?._id.toString() || '0'}
+          renderMessage={(props) => <ChatMessage messageProps={props} />}
+          renderInputToolbar={(props) => renderInputToolbar(props, theme)}
+          renderSend={(props) => renderSend(props, theme)}
+          renderComposer={(props) => renderComposer(props, theme, t('Contacts.TypeHere'))}
+          disableComposer={!silentAssertConnectedNetwork()}
+          onSend={onSend}
+          user={{
+            _id: Role.me,
+          }}
+          renderActions={(props) => renderActions(props, theme, actions as any)}
+          onPressActionButton={actions && actions.length > 0 ? () => setShowActionSlider(true) : undefined}
+          messagesContainerStyle={{
+            paddingHorizontal: 12,
+          }}
+        />
+        {showActionSlider && <ActionSlider onDismiss={onDismiss} actions={actions as any} />}
+      </KeyboardAvoidingView>
+    </GradientBackground>
   )
 
   return (
-    <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>
-      {overflowMenu}
-      {chatContent}
-    </SafeAreaView>
+    <GradientBackground>
+      <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, paddingTop: 20 }}>
+        {overflowMenu}
+        {chatContent}
+      </SafeAreaView>
+    </GradientBackground>
   )
 }
 

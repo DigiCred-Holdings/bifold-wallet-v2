@@ -73,16 +73,17 @@ const DigiCredButton: React.FC<DigiCredButtonProps> = ({
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
     >
-      {loading ? (
-        <View style={{marginHorizontal: 50}}>
-          <ActivityIndicator color={finalIconColor} />
-        </View>
-      ) : (
-        <View style={styles.content}>
-          <Text style={textStyles}>{title}</Text>
-          {iconName && <Icon name={iconName} size={iconSize} color={finalIconColor} style={styles.icon} />}
-        </View>
-      )}
+      <View style={styles.content}>
+        <Text style={[textStyles, loading && { opacity: 0 }]}>{title}</Text>
+
+        {iconName && !loading && <Icon name={iconName} size={iconSize} color={finalIconColor} style={styles.icon} />}
+
+        {loading && (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator color={finalIconColor} />
+          </View>
+        )}
+      </View>
     </TouchableOpacity>
   )
 }
@@ -94,6 +95,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 35,
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
   },
   content: {
     flexDirection: 'row',
@@ -118,11 +125,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonText: {
-    color: DigiCredColors.text.primary,
+    color: DigiCredColors.toggle.thumb,
     fontSize: 16,
     fontWeight: '600',
     letterSpacing: 1,
     textTransform: 'uppercase',
+    flexWrap: 'nowrap'
   },
   secondaryButtonText: {
     color: DigiCredColors.text.primary,

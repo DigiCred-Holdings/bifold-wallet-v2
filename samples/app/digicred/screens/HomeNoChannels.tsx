@@ -11,7 +11,6 @@ import {
 } from 'react-native'
 import { GradientBackground, DigiCredButton } from '../components'
 import { useTranslation } from 'react-i18next'
-import LinearGradient from 'react-native-linear-gradient'
 import FactCheck from '../assets/FactCheck.svg'
 import LockPurple from '../assets/LockPurple.svg'
 import DigiCredPurple from '../assets/DigiCredPurple.svg'
@@ -169,11 +168,8 @@ const HomeNoChannels = () => {
             <Text style={[styles.description, isSmallScreen() ? { marginVertical: 20 } : {}]}>
               {t('homeNoChannels.description')}
             </Text>
-            <LinearGradient
-              colors={DigiCredColors.homeNoChannels.buttonGradient}
-              locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
+            <GradientBackground
+              buttonPurple
               style={[styles.backgroundBtn, isTablet() ? { width: '60%', height: 60 } : { width: '75%' }]}
             >
               <DigiCredButton
@@ -186,7 +182,7 @@ const HomeNoChannels = () => {
                 iconSize={20}
                 iconColor={DigiCredColors.text.primary}
               />
-            </LinearGradient>
+            </GradientBackground>
             <Text
               style={[
                 styles.howItWorks,
@@ -327,10 +323,10 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   backgroundBtn: {
+    height: 55,
     borderRadius: 25,
     justifyContent: 'center',
     marginBottom: 50,
-    height: 45,
     alignSelf: 'center',
   },
   buttonText: {

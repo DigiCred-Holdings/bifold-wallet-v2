@@ -1,8 +1,6 @@
-
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
-import { DigiCredButton } from '../index'
+import { DigiCredButton, GradientBackground } from '../index'
 import { DigiCredColors } from '../../theme'
 import { useTranslation } from 'react-i18next'
 
@@ -54,13 +52,7 @@ const CredentialButtons: React.FC<CredentialButtonsProps> = ({
           />
         )}
 
-        <LinearGradient
-          colors={DigiCredColors.homeNoChannels.buttonGradient}
-          locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.transcriptAcceptGradientWrapper}
-        >
+        <GradientBackground buttonPurple style={styles.transcriptAcceptGradientWrapper}>
           <DigiCredButton
             title={isShare ? t('Global.Share') : t('Global.Accept')}
             onPress={onAccept}
@@ -69,7 +61,7 @@ const CredentialButtons: React.FC<CredentialButtonsProps> = ({
             customStyle={styles.transcriptAcceptButton}
             customTextStyle={styles.transcriptAcceptButtonText}
           />
-        </LinearGradient>
+        </GradientBackground>
       </View>
     )
   }
@@ -87,11 +79,8 @@ const CredentialButtons: React.FC<CredentialButtonsProps> = ({
         />
 
         <View style={styles.acceptGradientWrapper}>
-          <LinearGradient
-            colors={DigiCredColors.homeNoChannels.buttonGradient}
-            locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
+          <GradientBackground
+            buttonPurple
             style={styles.acceptGradient}
           >
             <DigiCredButton
@@ -102,7 +91,7 @@ const CredentialButtons: React.FC<CredentialButtonsProps> = ({
               customStyle={styles.acceptButton}
               customTextStyle={styles.acceptButtonText}
             />
-          </LinearGradient>
+          </GradientBackground>
         </View>
       </View>
     )
@@ -130,13 +119,7 @@ const CredentialButtons: React.FC<CredentialButtonsProps> = ({
       )}
 
       <View style={styles.threeButtonAcceptWrapper}>
-        <LinearGradient
-          colors={DigiCredColors.homeNoChannels.buttonGradient}
-          locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.threeButtonAcceptGradient}
-        >
+        <GradientBackground buttonPurple style={styles.threeButtonAcceptGradient}>
           <DigiCredButton
             title={(isShare ? t('Global.SHARE') : t('Global.ACCEPT')) + '  \u002B'}
             onPress={onAccept}
@@ -145,7 +128,7 @@ const CredentialButtons: React.FC<CredentialButtonsProps> = ({
             customStyle={styles.threeButtonAccept}
             customTextStyle={styles.threeButtonAcceptText}
           />
-        </LinearGradient>
+        </GradientBackground>
       </View>
     </View>
   )
@@ -155,9 +138,9 @@ const styles = StyleSheet.create({
   groupButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '90%',
+    width: '100%',
     alignItems: 'center',
-    marginTop: 20,
+    marginVertical: 10,
     alignSelf: 'center',
   },
   declineButton: {
@@ -165,7 +148,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: DigiCredColors.text.homePrimary,
     borderRadius: 25,
-    width: '43%',
+    width: '45%',
     height: 45,
     padding: 0,
     justifyContent: 'center',
@@ -178,7 +161,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   acceptGradientWrapper: {
-    width: '46%',
+    width: '48%',
     height: 45,
     marginRight: 5,
   },
@@ -284,7 +267,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 5,
     marginVertical: 5,
-    minWidth: 140,
+    minWidth: 160,
   },
   transcriptDeclineButtonText: {
     color: DigiCredColors.text.homePrimary,
@@ -303,7 +286,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 5,
     marginVertical: 5,
-    minWidth: 160,
+    minWidth: 180,
   },
   transcriptChangeButtonText: {
     color: DigiCredColors.text.homePrimary,
