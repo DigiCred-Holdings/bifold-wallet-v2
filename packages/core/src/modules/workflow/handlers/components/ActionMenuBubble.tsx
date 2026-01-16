@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../../contexts/theme'
 import { ActionMenuContentItem } from '../../types'
 import { ContentRegistry, FormFieldRegistry } from '../../ui-elements'
@@ -157,8 +157,15 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workflowID]) // Only depend on workflowID
-  const { width } = Dimensions.get('window')
+  // const { width } = Dimensions.get('window')
   // const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
+
+  const colors = {
+    primary: ColorPalette.brand.primary,
+    text: ColorPalette.brand.text,
+    background: ColorPalette.brand.secondaryBackground,
+    border: ColorPalette.brand.primary,
+  }
 
   const styles = StyleSheet.create({
     bubble: {
