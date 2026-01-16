@@ -12337,7 +12337,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-av@npm:13.10.6":
+"expo-av@npm:13.10.6, expo-av@npm:~13.10.6":
   version: 13.10.6
   resolution: "expo-av@npm:13.10.6"
   peerDependencies:
