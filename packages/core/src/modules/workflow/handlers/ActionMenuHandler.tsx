@@ -100,6 +100,7 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
     const parsed = this.parseActionMenu(record)
     if (parsed) {
       // Attach parsed data to record for later use
+      // eslint-disable-next-line no-extra-semi
       ;(record as ActionMenuRecord)._parsedActionMenu = parsed
       return true
     }

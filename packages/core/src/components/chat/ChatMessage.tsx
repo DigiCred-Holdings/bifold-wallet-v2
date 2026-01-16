@@ -134,7 +134,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
   }
 
   // Regular messages
-  const isMe = message.user._id === Role.me
+  //const isMe = message.user._id === Role.me
 
   return (
     <View
