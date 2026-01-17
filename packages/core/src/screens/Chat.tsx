@@ -197,7 +197,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
         <Pressable
           onPress={() => navigation.goBack()}
           accessibilityLabel={t('Global.Back') ?? 'Back'}
-          style={{ padding: 8, marginLeft: 8, zIndex: 1 }}
+          style={{ padding: 8, marginLeft: 8, zIndex: 10 }}
         >
           <MaterialCommunityIcon name="chevron-left" size={40} color="#FFFFFF" />
         </Pressable>

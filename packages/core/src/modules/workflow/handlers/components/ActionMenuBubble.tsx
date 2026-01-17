@@ -216,7 +216,6 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({
       lineHeight: 24,
       textAlign: 'center',
       color: ColorPalette.grayscale.white,
-      textTransform: 'uppercase',
     },
     textInput: {
       height: 48,

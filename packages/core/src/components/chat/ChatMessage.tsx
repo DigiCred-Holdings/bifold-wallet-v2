@@ -212,8 +212,7 @@ const styles = StyleSheet.create({
 
   // Time
   timeContainer: {
-    width: '90%',
-    marginLeft: '5%',
+    width: '100%',
   },
   timeLeft: {
     alignItems: 'flex-start',

@@ -78,7 +78,6 @@ export function detectCredentialType(credential: CredentialExchangeRecord): Cred
   ) {
     return CredentialDisplayType.STUDENT_ID
   }
-
   return CredentialDisplayType.DEFAULT
 }
 
@@ -289,6 +288,7 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
   useEffect(() => {
     const checkCredentialStatus = async () => {
       if (!agent) return
+
 
       try {
         const allCredentials = await agent.credentials.getAll()
@@ -525,9 +525,6 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
         ''
 
       await agent.credentials.declineOffer(credential.id)
-      if (credential.connectionId != null) {
-        await agent?.basicMessages.sendMessage(credential.connectionId, ':menu')
-      }
       const declinedCred = await agent.credentials.findById(credential.id)
       if (declinedCred && offerAttributes.length > 0) {
         await declinedCred.metadata.set('offerPreview', offerAttributes)
@@ -545,8 +542,10 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
           })
         }
       }
-
       setUserAction('declined')
+      if (credential.connectionId != null) {
+        await agent?.basicMessages.sendMessage(credential.connectionId, ':menu')
+      }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err)
       const error = new BifoldError(t('Error.Title1025'), t('Error.Message1025'), errorMessage, 1025)
@@ -644,7 +643,7 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
     return (
       <View>
         <View style={{ opacity: 0.5 }}>{cardContent}</View>
-        <Text style={styles.messageTime}>
+        <Text style={[styles.messageTime]}>
           {`${t('Chat.ReceivedAt')} ${formatTime(new Date(credential.createdAt), {
             includeHour: true,
             chatFormat: true,
